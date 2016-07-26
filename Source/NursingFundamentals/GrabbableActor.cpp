@@ -42,10 +42,12 @@ bool AGrabbableActor::SetCarried(bool bIsCarried, UGrabComponent* CarryingHand, 
 		{
 			//AudioComp->Play();
 			CarryingHand->AttachObject(this, true);
+			AttachedHand = CarryingHand;
 		}
 		else
 		{
 			CarryingHand->AttachObject(this, false);
+			AttachedHand = NULL;
 		}
 		return true;
 	}
@@ -56,9 +58,13 @@ bool AGrabbableActor::SetCarried(bool bIsCarried, UGrabComponent* CarryingHand, 
 
 }
 
-void AGrabbableActor::TriggerInteraction()
+void AGrabbableActor::DetachFromHand()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Triggered"));
+	if (AttachedHand)
+	{
+		AttachedHand->AttachObject(this, false);
+		AttachedHand = NULL;
+	}
 }
 
 int32 AGrabbableActor::GetActorID()
@@ -74,4 +80,9 @@ void AGrabbableActor::SetCanCarry(bool A)
 void AGrabbableActor::SetManager(AScriptManager* NewManager)
 {
 	Manager = NewManager;
+}
+
+void AGrabbableActor::TellManager()
+{
+	Manager->GamestateIncrement();
 }

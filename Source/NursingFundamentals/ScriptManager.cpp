@@ -33,15 +33,10 @@ void AScriptManager::Tick( float DeltaTime )
 
 void AScriptManager::GamestateIncrement()
 {
-	Gamestate++;
-
-	switch (Gamestate)
-	{
-	case 0:
-		break;
-	default:
+	if(Gamestate-1 >= 0)
+		Cast<AGrabbableActor>(GrabbableActors[Gamestate-1])->SetCanCarry(false);
+	if(Gamestate < GrabbableActors.Num())
 		Cast<AGrabbableActor>(GrabbableActors[Gamestate])->SetCanCarry(true);
-		break;
-	}
+	Gamestate++;
 }
 

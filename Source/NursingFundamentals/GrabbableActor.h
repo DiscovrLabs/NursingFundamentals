@@ -29,16 +29,26 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 		UStaticMeshComponent* ActorMesh;
 
-	virtual void TriggerInteraction();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Script")
+		void TriggerInteraction();
+
+	UFUNCTION(BlueprintCallable, Category = "Script")
+		void DetachFromHand();
+
 	int32 GetActorID();
 	void SetCanCarry(bool A);
 	void SetManager(AScriptManager* NewManager);
 
 protected:
-	AScriptManager* Manager;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+		AScriptManager* Manager;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 		int32 ActorID;
 
+	UFUNCTION(BlueprintCallable, Category = "Script")
+		void TellManager();
+
+	UGrabComponent* AttachedHand;
 	bool bCanCarry;
 };

@@ -1,0 +1,20 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "GrabbableActor.h"
+#include "HeartRateMonitor.generated.h"
+
+/**
+ * 
+ */
+UCLASS()
+class NURSINGFUNDAMENTALS_API AHeartRateMonitor : public AGrabbableActor
+{
+	GENERATED_BODY()
+	
+public:
+	bool SetCarried(bool bIsCarried, UGrabComponent* CarryingHand, bool bLeftHand) override;
+	
+	
+};

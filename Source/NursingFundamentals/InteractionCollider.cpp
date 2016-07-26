@@ -13,6 +13,9 @@ AInteractionCollider::AInteractionCollider()
 	BoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollider"));
 	RootComponent = BoxCollider;
 
+	BoxCollider->SetCollisionObjectType(ECollisionChannel::ECC_Destructible);
+	BoxCollider->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
+
 	this->OnActorBeginOverlap.AddDynamic(this, &AInteractionCollider::OnBeginOverlap);
 	this->OnActorBeginOverlap.AddDynamic(this, &AInteractionCollider::OnEndOverlap);
 }
@@ -33,7 +36,7 @@ void AInteractionCollider::Tick( float DeltaTime )
 
 void AInteractionCollider::OnBeginOverlap(AActor* Actor, AActor * OtherActor)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Collided"));
+	UE_LOG(LogTemp, Warning, TEXT("Collided with %s"), *OtherActor->GetName());
 
 	AGrabbableActor* TempActor = Cast<AGrabbableActor>(OtherActor);
 	if (TempActor->GetActorID() == ColliderID)
