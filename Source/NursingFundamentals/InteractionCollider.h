@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include "GrabbableActor.h"
 #include "InteractionCollider.generated.h"
 
 UCLASS()
@@ -24,7 +25,8 @@ public:
 		UBoxComponent* BoxCollider;
 	
 protected:
-	int32 ColliderID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+		int32 ColliderID;
 
 	UFUNCTION()
 		void OnBeginOverlap(AActor* Actor, AActor * OtherActor);

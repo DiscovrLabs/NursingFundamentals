@@ -12,13 +12,19 @@ AGrabbableActor::AGrabbableActor()
 
 	ActorMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ActorMesh"));
 	RootComponent = ActorMesh;
+
+	bCanCarry = false;
 }
 
 // Called when the game starts or when spawned
 void AGrabbableActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	/*
+	TArray<AActor*> TempArray;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AScriptManager::StaticClass(), TempArray);
+	Manager = Cast<AScriptManager>(TempArray[0]);
+	*/
 }
 
 // Called every frame
@@ -30,14 +36,42 @@ void AGrabbableActor::Tick( float DeltaTime )
 
 bool AGrabbableActor::SetCarried(bool bIsCarried, UGrabComponent* CarryingHand, bool bLeftHand)
 {
-	if (bIsCarried)
+	if (bCanCarry)
 	{
-		//AudioComp->Play();
-		CarryingHand->AttachObject(this, true);
+		if (bIsCarried)
+		{
+			//AudioComp->Play();
+			CarryingHand->AttachObject(this, true);
+		}
+		else
+		{
+			CarryingHand->AttachObject(this, false);
+		}
+		return true;
 	}
 	else
 	{
-		CarryingHand->AttachObject(this, false);
+		return false;
 	}
-	return true;
+
+}
+
+void AGrabbableActor::TriggerInteraction()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Triggered"));
+}
+
+int32 AGrabbableActor::GetActorID()
+{
+	return ActorID;
+}
+
+void AGrabbableActor::SetCanCarry(bool A)
+{
+	bCanCarry = A;
+}
+
+void AGrabbableActor::SetManager(AScriptManager* NewManager)
+{
+	Manager = NewManager;
 }

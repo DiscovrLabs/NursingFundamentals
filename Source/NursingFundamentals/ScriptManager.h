@@ -20,6 +20,11 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
+	void GamestateIncrement();
 	
-	
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+		TArray<AActor*> GrabbableActors;
+
+	int32 Gamestate;
 };

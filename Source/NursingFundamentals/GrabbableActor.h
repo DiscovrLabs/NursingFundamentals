@@ -4,6 +4,7 @@
 
 #include "GameFramework/Actor.h"
 #include "GrabComponent.h"
+#include "ScriptManager.h"
 #include "GrabbableActor.generated.h"
 
 UCLASS()
@@ -21,10 +22,23 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
-	int32 GetCarryCount();
+	//int32 GetCarryCount();
 
 	virtual bool SetCarried(bool bIsCarried, UGrabComponent* CarryingHand, bool bLeftHand);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 		UStaticMeshComponent* ActorMesh;
+
+	virtual void TriggerInteraction();
+	int32 GetActorID();
+	void SetCanCarry(bool A);
+	void SetManager(AScriptManager* NewManager);
+
+protected:
+	AScriptManager* Manager;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+		int32 ActorID;
+
+	bool bCanCarry;
 };

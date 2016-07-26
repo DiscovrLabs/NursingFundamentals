@@ -10,6 +10,9 @@ AInteractionCollider::AInteractionCollider()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	BoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollider"));
+	RootComponent = BoxCollider;
+
 	this->OnActorBeginOverlap.AddDynamic(this, &AInteractionCollider::OnBeginOverlap);
 	this->OnActorBeginOverlap.AddDynamic(this, &AInteractionCollider::OnEndOverlap);
 }
@@ -30,7 +33,13 @@ void AInteractionCollider::Tick( float DeltaTime )
 
 void AInteractionCollider::OnBeginOverlap(AActor* Actor, AActor * OtherActor)
 {
-	FName ObjectID = OtherActor->Tags[0];
+	UE_LOG(LogTemp, Warning, TEXT("Collided"));
+
+	AGrabbableActor* TempActor = Cast<AGrabbableActor>(OtherActor);
+	if (TempActor->GetActorID() == ColliderID)
+	{
+		TempActor->TriggerInteraction();
+	}
 }
 
 void AInteractionCollider::OnEndOverlap(AActor* Actor, AActor * OtherActor)

@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "NursingFundamentals.h"
+#include "HandAnimInstance.h"
 #include "DiscovrPawn.h"
 
 
@@ -30,6 +31,14 @@ ADiscovrPawn::ADiscovrPawn()
 
 	RHandMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("RHandMesh"));
 	RHandMesh->SetupAttachment(RightHand);
+
+	LeftPalm = CreateDefaultSubobject<UGrabComponent>(TEXT("LeftPalm"));
+	LeftPalm->bLeftHand = true;
+	LeftPalm->SetupAttachment(LHandMesh);
+
+	RightPalm = CreateDefaultSubobject<UGrabComponent>(TEXT("RightPalm"));
+	RightPalm->bLeftHand = true;
+	RightPalm->SetupAttachment(RHandMesh);
 }
 
 // Called when the game starts or when spawned
@@ -48,7 +57,7 @@ void ADiscovrPawn::Tick( float DeltaTime )
 
 void ADiscovrPawn::SetGrabbing(bool _bGrabbing, bool bLeftHand)
 {
-	/*
+	
 	UHandAnimInstance * Animation = Cast<UHandAnimInstance>((bLeftHand) ? LHandMesh->GetAnimInstance() : RHandMesh->GetAnimInstance());
 
 	//No Anim Instance Acquired?
@@ -56,5 +65,5 @@ void ADiscovrPawn::SetGrabbing(bool _bGrabbing, bool bLeftHand)
 
 	//Set Animblueprint data
 	Animation->bGrabbing = _bGrabbing;
-	*/
+	
 }
