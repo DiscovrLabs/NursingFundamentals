@@ -14,7 +14,10 @@ class NURSINGFUNDAMENTALS_API AHeartRateMonitor : public AGrabbableActor
 	GENERATED_BODY()
 	
 public:
+	AHeartRateMonitor();
+
 	bool SetCarried(bool bIsCarried, UGrabComponent* CarryingHand, bool bLeftHand) override;
 	
-	
+protected:
+	bool bHasIncremented;
 };

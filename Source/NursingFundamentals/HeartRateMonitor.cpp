@@ -3,6 +3,11 @@
 #include "NursingFundamentals.h"
 #include "HeartRateMonitor.h"
 
+AHeartRateMonitor::AHeartRateMonitor()
+{
+	bHasIncremented = false;
+}
+
 bool AHeartRateMonitor::SetCarried(bool bIsCarried, UGrabComponent* CarryingHand, bool bLeftHand)
 {
 	if (bCanCarry)
@@ -17,7 +22,11 @@ bool AHeartRateMonitor::SetCarried(bool bIsCarried, UGrabComponent* CarryingHand
 		{
 			CarryingHand->AttachObject(this, false);
 			AttachedHand = NULL;
-			Manager->GamestateIncrement();
+			if (!bHasIncremented)
+			{
+				Manager->GamestateIncrement();
+				bHasIncremented = true;
+			}
 		}
 		return true;
 	}
