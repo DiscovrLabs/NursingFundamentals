@@ -7,8 +7,9 @@
 void ADiscovrPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	bLGrabbing = bRGrabbing = false;
+	bLGrabbing = bRGrabbing = bMenuEnabled = false;
 
+	HUD = Cast<ADiscovrHUD>(GetHUD());
 	Player = Cast<ADiscovrPawn>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 }
 
@@ -26,10 +27,15 @@ void ADiscovrPlayerController::SetupInputComponent()
 	InputComponent->BindAction("LSelect", IE_Released, this, &ADiscovrPlayerController::LDrop);
 	InputComponent->BindAction("RSelect", IE_Pressed, this, &ADiscovrPlayerController::RSelect);
 	InputComponent->BindAction("RSelect", IE_Released, this, &ADiscovrPlayerController::RDrop);
+	InputComponent->BindAction("Menu", IE_Pressed, this, &ADiscovrPlayerController::RSelect);
 }
 
 void ADiscovrPlayerController::LSelect()
 {
+	if (bMenuEnabled)
+	{
+		HUD->Click();
+	}
 	Player->LeftPalm->GrabItem();
 	Player->SetGrabbing(true, true);
 	bLGrabbing = true;
@@ -55,4 +61,16 @@ void ADiscovrPlayerController::RDrop()
 	Player->RightPalm->DropItem();
 	Player->SetGrabbing(false, false);
 	bRGrabbing = false;
+}
+
+void ADiscovrPlayerController::ToggleMenu()
+{
+	if (bMenuEnabled)
+	{
+		bMenuEnabled = false;
+	}
+	else
+	{
+		bMenuEnabled = false;
+	}
 }

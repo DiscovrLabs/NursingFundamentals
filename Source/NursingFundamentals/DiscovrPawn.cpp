@@ -32,6 +32,9 @@ ADiscovrPawn::ADiscovrPawn()
 	RHandMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("RHandMesh"));
 	RHandMesh->SetupAttachment(RightHand);
 
+	RLaserOrigin = CreateDefaultSubobject<USceneComponent>(TEXT("RLaserOrigin"));
+	RLaserOrigin->SetupAttachment(RHandMesh, FName(TEXT("FingerTip")));
+
 	LeftPalm = CreateDefaultSubobject<UGrabComponent>(TEXT("LeftPalm"));
 	LeftPalm->bLeftHand = true;
 	LeftPalm->SetupAttachment(LHandMesh);

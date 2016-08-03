@@ -24,6 +24,9 @@ public:
 
 	void SetGrabbing(bool _bGrabbing, bool bLeftHand);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Laser")
+		USceneComponent* RLaserOrigin;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MotionController")
 		UMotionControllerComponent* LeftHand;
 
