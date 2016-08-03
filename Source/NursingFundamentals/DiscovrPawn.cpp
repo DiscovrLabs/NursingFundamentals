@@ -70,3 +70,19 @@ void ADiscovrPawn::SetGrabbing(bool _bGrabbing, bool bLeftHand)
 	Animation->bGrabbing = _bGrabbing;
 	
 }
+
+void ADiscovrPawn::SetPointing(bool _bPointing, bool bLeftHand)
+{
+	UHandAnimInstance * Animation = Cast<UHandAnimInstance>((bLeftHand) ? LHandMesh->GetAnimInstance() : RHandMesh->GetAnimInstance());
+
+	//No Anim Instance Acquired?
+	if (!Animation) return;
+
+	//Set Animblueprint data
+	Animation->bPointing = _bPointing;
+}
+
+USkeletalMeshComponent * ADiscovrPawn::GetHandMesh()
+{
+	return LHandMesh;
+}

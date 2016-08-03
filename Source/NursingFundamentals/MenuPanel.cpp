@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "NursingFundamentals.h"
+#include "DiscovrPawn.h"
 #include "MenuPanel.h"
 
 
@@ -9,12 +10,10 @@ AMenuPanel::AMenuPanel()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	float X = 100;
-	float Y = 0;
 
-	ClickableContainersLocations.Add(FVector2D(X, Y));
-	ClickableContainersLocations.Add(FVector2D(0, Y));
-	ClickableContainersLocations.Add(FVector2D(-X, Y));
+	ClickableContainersLocations.Add(FVector2D(0, 7.5));
+	ClickableContainersLocations.Add(FVector2D(-4.5, 0));
+	ClickableContainersLocations.Add(FVector2D(4.5, 0));
 }
 
 // Called when the game starts or when spawned
@@ -25,15 +24,18 @@ void AMenuPanel::BeginPlay()
 	for (int i = 0; i < ClickableContainersLocations.Num(); i++)
 	{
 		TempArray.Add(GetWorld()->SpawnActor(ClickaleContainerBP));
-		TempArray[i]->AttachRootComponentTo(RootComponent, NAME_None, EAttachLocation::SnapToTarget);
+		TempArray[i]->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale, NAME_None);
 		TempArray[i]->SetActorRotation(GetActorRotation());
 		TempArray[i]->AddActorLocalOffset(FVector(0.f, ClickableContainersLocations[i].X, ClickableContainersLocations[i].Y));
 		ClickableContainers.Add(Cast<AClickableWidgetContainer>(TempArray[i]));
 		ClickableContainers[i]->LocalOffset = FVector(0.f, ClickableContainersLocations[i].X, ClickableContainersLocations[i].Y);
 		ClickableContainers[i]->SetStartLocation(ClickableContainers[i]->LocalOffset);
-		//Cast<AModuleContainer>(ClickableContainers[i])->ParentPanelContainer = this;
+		ClickableContainers[i]->ContainerNum = i;
+		ClickableContainers[i]->ParentPanel = this;
 	}
 	SetupClickableWidgets(ButtonImages);
+	this->AttachToComponent(Cast<ADiscovrPawn>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0))->GetHandMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, "ThumbSocket");
+	EnableClickableContainers(false);
 	//EnableButtons(false);
 }
 
@@ -50,6 +52,7 @@ void AMenuPanel::EnableClickableContainers(bool bEnable)
 	{
 		for (AClickableWidgetContainer* Container : ClickableContainers)
 		{
+			Container->SetActorHiddenInGame(false);
 			Container->EnableCollision(true);
 		}
 	}
@@ -57,7 +60,13 @@ void AMenuPanel::EnableClickableContainers(bool bEnable)
 	{
 		for (AClickableWidgetContainer* Container : ClickableContainers)
 		{
+			Container->SetActorHiddenInGame(true);
 			Container->EnableCollision(false);
 		}
 	}
+}
+
+void AMenuPanel::ContainerClicked(int32 ContainerNum)
+{
+	
 }

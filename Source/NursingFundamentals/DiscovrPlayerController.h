@@ -5,6 +5,7 @@
 #include "GameFramework/PlayerController.h"
 #include "DiscovrPawn.h"
 #include "DiscovrHUD.h"
+#include "MenuPanel.h"
 #include "DiscovrPlayerController.generated.h"
 
 /**
@@ -28,6 +29,7 @@ public:
 protected:
 	ADiscovrPawn* Player;
 	ADiscovrHUD* HUD;
+	AMenuPanel* MenuPanel;
 
 	bool bLGrabbing;
 	bool bRGrabbing;
@@ -38,4 +40,6 @@ protected:
 	void LDrop();
 	void RDrop();
 	void ToggleMenu();
+	void EnableRLaser();
+	void DisableRLaser();
 };

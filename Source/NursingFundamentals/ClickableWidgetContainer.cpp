@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "NursingFundamentals.h"
+#include "MenuPanel.h"
 #include "ClickableWidgetContainer.h"
 
 
@@ -16,10 +17,7 @@ AClickableWidgetContainer::AClickableWidgetContainer()
 	WidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
 	WidgetComponent->SetupAttachment(Root);
 
-	BoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Collider"));
-	BoxCollider->SetupAttachment(Root);
-
-	Alpha = 0;
+	Alpha = ContainerNum = 0;
 	bChangeDirection = bChangingSize = bClickedOn = false;
 }
 
@@ -39,7 +37,7 @@ void AClickableWidgetContainer::Tick( float DeltaTime )
 	if (bChangingSize)
 	{
 		//EndLocation = FRotationMatrix(GetActorRotation()).GetScaledAxis(EAxis::X) * 30.f + StartLocation;
-		EndLocation = FVector(30.f, LocalOffset.Y, LocalOffset.Z);
+		EndLocation = FVector(4.f, LocalOffset.Y, LocalOffset.Z);
 		if (bChangeDirection)
 		{
 			Alpha = FMath::Clamp(Alpha + DeltaTime * 4.f, 0.f, 1.f);
@@ -60,6 +58,7 @@ void AClickableWidgetContainer::Tick( float DeltaTime )
 // Called when clicked on by laser
 void AClickableWidgetContainer::ClickButton()
 {
+	Cast<AMenuPanel>(ParentPanel)->ContainerClicked(ContainerNum);
 	//Manager->ConfirmSelection(ModuleBP);
 	//Manager->DisableOtherContainers(this);
 }
@@ -87,10 +86,10 @@ void AClickableWidgetContainer::EnableCollision(bool bEnable)
 {
 	if (bEnable)
 	{
-		BoxCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+		WidgetComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	}
 	else
-		BoxCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		WidgetComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 // Set start location

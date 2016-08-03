@@ -36,12 +36,13 @@ void AInteractionCollider::Tick( float DeltaTime )
 
 void AInteractionCollider::OnBeginOverlap(AActor* Actor, AActor * OtherActor)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Collided with %s"), *OtherActor->GetName());
-
 	AGrabbableActor* TempActor = Cast<AGrabbableActor>(OtherActor);
-	if (TempActor->GetActorID() == ColliderID)
+	if (TempActor)
 	{
-		TempActor->TriggerInteraction();
+		if (TempActor->GetActorID() == ColliderID)
+		{
+			TempActor->TriggerInteraction();
+		}
 	}
 }
 

@@ -11,6 +11,9 @@ void ADiscovrPlayerController::BeginPlay()
 
 	HUD = Cast<ADiscovrHUD>(GetHUD());
 	Player = Cast<ADiscovrPawn>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	TArray<AActor*> TempArray;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AMenuPanel::StaticClass(), TempArray);
+	MenuPanel = Cast<AMenuPanel>(TempArray[0]);
 }
 
 void ADiscovrPlayerController::Tick(float DeltaTime)
@@ -27,26 +30,31 @@ void ADiscovrPlayerController::SetupInputComponent()
 	InputComponent->BindAction("LSelect", IE_Released, this, &ADiscovrPlayerController::LDrop);
 	InputComponent->BindAction("RSelect", IE_Pressed, this, &ADiscovrPlayerController::RSelect);
 	InputComponent->BindAction("RSelect", IE_Released, this, &ADiscovrPlayerController::RDrop);
-	InputComponent->BindAction("Menu", IE_Pressed, this, &ADiscovrPlayerController::RSelect);
+	InputComponent->BindAction("Menu", IE_Pressed, this, &ADiscovrPlayerController::ToggleMenu);
 }
 
 void ADiscovrPlayerController::LSelect()
+{
+	if (!bMenuEnabled)
+	{
+		Player->LeftPalm->GrabItem();
+		Player->SetGrabbing(true, true);
+		bLGrabbing = true;
+	}
+}
+
+void ADiscovrPlayerController::RSelect()
 {
 	if (bMenuEnabled)
 	{
 		HUD->Click();
 	}
-	Player->LeftPalm->GrabItem();
-	Player->SetGrabbing(true, true);
-	bLGrabbing = true;
-}
-
-void ADiscovrPlayerController::RSelect()
-{
-
-	Player->RightPalm->GrabItem();
-	Player->SetGrabbing(true, false);
-	bRGrabbing = true;
+	else
+	{
+		Player->RightPalm->GrabItem();
+		Player->SetGrabbing(true, false);
+		bRGrabbing = true;
+	}
 }
 
 void ADiscovrPlayerController::LDrop()
@@ -65,12 +73,31 @@ void ADiscovrPlayerController::RDrop()
 
 void ADiscovrPlayerController::ToggleMenu()
 {
-	if (bMenuEnabled)
+	if (!bRGrabbing && !bLGrabbing)
 	{
-		bMenuEnabled = false;
+		if (bMenuEnabled)
+		{
+			DisableRLaser();
+			MenuPanel->EnableClickableContainers(false);
+			bMenuEnabled = false;
+		}
+		else
+		{
+			EnableRLaser();
+			MenuPanel->EnableClickableContainers(true);
+			bMenuEnabled = true;
+		}
 	}
-	else
-	{
-		bMenuEnabled = false;
-	}
+}
+
+void ADiscovrPlayerController::EnableRLaser()
+{
+	HUD->EnableLaser(true);
+	Player->SetPointing(true, false);
+}
+
+void ADiscovrPlayerController::DisableRLaser()
+{
+	HUD->EnableLaser(false);
+	Player->SetPointing(false, false);
 }

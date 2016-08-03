@@ -12,6 +12,7 @@ AGrabbableActor::AGrabbableActor()
 
 	ActorMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ActorMesh"));
 	RootComponent = ActorMesh;
+	ActorID = 99;
 
 	bCanCarry = false;
 }

@@ -38,8 +38,9 @@ public:
 		USceneComponent* Root;
 
 	FVector LocalOffset;
+	int32 ContainerNum;
 
-//	APanelContainer* ParentPanelContainer;
+	AActor* ParentPanel;
 
 protected:
 	// Base values for actor to move
@@ -52,9 +53,6 @@ protected:
 	bool bChangeDirection;
 	bool bChangingSize;
 	bool bClickedOn;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Collision")
-		UBoxComponent* BoxCollider;
 
 	// Helper function to modify blueprint widget
 	UFUNCTION(BlueprintImplementableEvent, Category = "WidgetData")

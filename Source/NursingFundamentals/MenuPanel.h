@@ -21,9 +21,10 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
-protected:
+	void ContainerClicked(int32 ContainerNum);
 	void EnableClickableContainers(bool bEnable);
-	
+
+protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "UI")
 		void SetupClickableWidgets(const TArray<UTexture2D*> &_Images);
 

@@ -23,6 +23,9 @@ public:
 	virtual void Tick( float DeltaSeconds ) override;
 
 	void SetGrabbing(bool _bGrabbing, bool bLeftHand);
+	void SetPointing(bool _bPointing, bool bLeftHand);
+
+	USkeletalMeshComponent* GetHandMesh();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Laser")
 		USceneComponent* RLaserOrigin;
