@@ -14,10 +14,13 @@ ATeleporter::ATeleporter()
 	SphereCollider = CreateDefaultSubobject<USphereComponent>(TEXT("SphereCollider"));
 	RootComponent = SphereCollider;
 	SphereCollider->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
+	SphereCollider->SetSphereRadius(32);
 
-	Billboard = CreateDefaultSubobject<UBillboardComponent>(TEXT("Billboard"));
-	Billboard->SetupAttachment(SphereCollider);
+	WidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetComponent"));
+	WidgetComponent->SetupAttachment(SphereCollider);
 
+	GazeTimer = 0;
+	bIsHovered = false;
 	bEnabled = true;
 }
 
@@ -26,7 +29,7 @@ void ATeleporter::BeginPlay()
 {
 	Super::BeginPlay();
 	Player = Cast<ADiscovrPawn>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
-	Billboard->SetHiddenInGame(false);
+	WidgetComponent->SetHiddenInGame(false);
 
 	if (!bEnabled)
 	{
@@ -39,6 +42,14 @@ void ATeleporter::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
+	if (bIsHovered)
+	{
+		GazeTimer += DeltaTime;
+		if (GazeTimer >= 2.5f)
+		{
+			ClickButton();
+		}
+	}
 }
 
 // Called when clicked on by laser
@@ -52,6 +63,16 @@ void ATeleporter::ClickButton()
 // Called when laser enters or exits hovering
 void ATeleporter::SetHovered(bool bHovered)
 {
+	SetWidgetHovered(bHovered);
+	if (bHovered)
+	{
+		bIsHovered = true;
+	}
+	else
+	{
+		bIsHovered = false;
+		GazeTimer = 0;
+	}
 }
 
 void ATeleporter::EnableTeleporter(bool Enable)
@@ -59,12 +80,12 @@ void ATeleporter::EnableTeleporter(bool Enable)
 	if (Enable)
 	{
 		SphereCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-		Billboard->SetHiddenInGame(false);
+		WidgetComponent->SetHiddenInGame(false);
 	}
 	else
 	{
 		SphereCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		Billboard->SetHiddenInGame(true);
+		WidgetComponent->SetHiddenInGame(true);
 		Cast<ATeleportManager>(TeleportManager)->SetDisabledTeleporter(this);
 	}
 }

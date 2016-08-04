@@ -3,12 +3,13 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
-#include "InteractableObject.h"
+#include "GazeTrigger.h"
 #include "DiscovrPawn.h"
+#include "Components/WidgetComponent.h"
 #include "Teleporter.generated.h"
 
 UCLASS()
-class NURSINGFUNDAMENTALS_API ATeleporter : public AActor, public IInteractableObject
+class NURSINGFUNDAMENTALS_API ATeleporter : public AActor, public IGazeTrigger
 {
 	GENERATED_BODY()
 	
@@ -23,7 +24,7 @@ public:
 	virtual void Tick( float DeltaSeconds ) override;
 
 	// InteractableObject interface functions
-	virtual void ClickButton() override;
+	void ClickButton();
 	virtual void SetHovered(bool bHovered) override;
 
 	void EnableTeleporter(bool Enable);
@@ -32,8 +33,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Collision")
 		USphereComponent* SphereCollider;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visibility")
-		UBillboardComponent* Billboard;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
+		UWidgetComponent* WidgetComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 		bool bEnabled;
@@ -42,4 +43,10 @@ protected:
 		AActor* TeleportManager;
 
 	ADiscovrPawn* Player;
+	float GazeTimer;
+	bool bIsHovered;
+
+	// Helper function to modify blueprint widget
+	UFUNCTION(BlueprintImplementableEvent, Category = "WidgetData")
+		void SetWidgetHovered(bool bHovered);
 };

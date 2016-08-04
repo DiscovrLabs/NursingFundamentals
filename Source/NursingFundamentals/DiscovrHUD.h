@@ -25,21 +25,23 @@ public:
 	void Click();
 
 protected:
+	ADiscovrPawn* Player;
+	APlayerCameraManager* CameraManager;
+
+	//Right Laser
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Laser")
 		UParticleSystem* LaserBP;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Laser")
 		UParticleSystemComponent* RLaserComponent;
-
 	AActor* RLookingAtActor;
-	ADiscovrPawn* Player;
-
 	FVector RLaserStartPoint;
 	FVector RLaserVector;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Laser")
-		float LaserRange;
-
+	float LaserRange;
 	bool bRightEnabled;
-	
+
+	//Face Gaze
+	AActor* FLookingAtActor;
+	FVector FGazeStartPoint;
+	FVector FGazeVector;
+	float GazeRange;
 };
