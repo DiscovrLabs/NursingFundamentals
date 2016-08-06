@@ -14,6 +14,8 @@ AMenuPanel::AMenuPanel()
 	ClickableContainersLocations.Add(FVector2D(0, 7.5));
 	ClickableContainersLocations.Add(FVector2D(-4.5, 0));
 	ClickableContainersLocations.Add(FVector2D(4.5, 0));
+
+	CurrentMode = 9;
 }
 
 // Called when the game starts or when spawned
@@ -68,5 +70,31 @@ void AMenuPanel::EnableClickableContainers(bool bEnable)
 
 void AMenuPanel::ContainerClicked(int32 ContainerNum)
 {
-	
+	if (Manager)
+	{
+		if (ContainerNum == CurrentMode)
+		{
+			EnableMode(false, ContainerNum);
+		}
+		else
+		{
+			EnableMode(true, ContainerNum);
+		}
+	}
+}
+
+void AMenuPanel::EnableMode(bool bEnable, int32 Mode)
+{
+	switch (Mode)
+	{
+	case 0:
+		break;
+	case 1:
+		Manager->EnableAssessments(true);
+		break;
+	case 2:
+		break;
+	default:
+		break;
+	}
 }

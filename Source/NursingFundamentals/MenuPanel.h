@@ -4,6 +4,7 @@
 
 #include "GameFramework/Actor.h"
 #include "ClickableWidgetContainer.h"
+#include "Manager.h"
 #include "MenuPanel.generated.h"
 
 UCLASS()
@@ -40,7 +41,13 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 		TArray<UTexture2D*> ButtonImages;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+		AManager* Manager;
+
 	TArray<FVector2D>  ClickableContainersLocations;
 
+	void EnableMode(bool bEnable, int32 Mode);
+
+	int32 CurrentMode;
 	//void EnableButtons(bool bEnable);
 };
