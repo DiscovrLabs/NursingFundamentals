@@ -78,14 +78,12 @@ void ADiscovrPlayerController::ToggleMenu()
 		if (bMenuEnabled)
 		{
 			DisableRLaser();
-			MenuPanel->EnableClickableContainers(false);
-			bMenuEnabled = false;
+			bMenuEnabled = MenuPanel->ClickMenuButton();
 		}
 		else
 		{
 			EnableRLaser();
-			MenuPanel->EnableClickableContainers(true);
-			bMenuEnabled = true;
+			bMenuEnabled = MenuPanel->ClickMenuButton();
 		}
 	}
 }

@@ -23,17 +23,24 @@ public:
 	virtual void Tick( float DeltaSeconds ) override;
 
 	void ContainerClicked(int32 ContainerNum);
-	void EnableClickableContainers(bool bEnable);
+
+	// Called to enable the menu or go up in the hierarchy of the menu
+	bool ClickMenuButton(); // Returns false if menu is disabled and true if menu is enabled after the changes
+
+	// Called to enable or disable a set of ClickableContainers
+	void EnableClickableContainers(bool bEnable, int32 Set); // if Set = 0 then MainContainers, if Set = 1 then SecContainers, if Set = 2 then TerContainers
 
 protected:
-	UFUNCTION(BlueprintImplementableEvent, Category = "UI")
-		void SetupClickableWidgets(const TArray<UTexture2D*> &_Images);
-
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
-		//TArray<AButtonCollider*> Buttons;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
-		TArray<AClickableWidgetContainer*> ClickableContainers;
+		AManager* Manager;
+
+	void EnableMode(int32 Mode);
+
+	/**************************************************************************
+		* MAIN MENU
+	**************************************************************************/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+		TArray<AClickableWidgetContainer*> MainClickableContainers;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 		TSubclassOf<AClickableWidgetContainer> ClickaleContainerBP;
@@ -41,13 +48,19 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 		TArray<UTexture2D*> ButtonImages;
 
+	TArray<FVector2D> MainClickableContainersLocations;
+	int32 MainContainerMode; // -1 = Not Visible, 0 = Not Selected, 1 = Communication, 2 = Assessment, 3 = Intervention
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "UI")
+		void SetupClickableWidgets(const TArray<UTexture2D*> &_Images);
+
+	/**************************************************************************
+		* COMMUNICATION MENU
+	**************************************************************************/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
-		AManager* Manager;
+		TArray<AClickableWidgetContainer*> SecClickableContainers;
 
-	TArray<FVector2D>  ClickableContainersLocations;
-
-	void EnableMode(bool bEnable, int32 Mode);
-
-	int32 CurrentMode;
-	//void EnableButtons(bool bEnable);
+	TArray<FVector2D> SecClickableContainersLocations;
+	int32 SecContainerMode; // 0 = Not Selected, 4 = Educate Patient, 5 = Current Illness, 6 = Medical History, 7 = Orientation
+	int32 HierarchyLevel; // The level of the hierarchy of the menu the player is currently using. -1 = MenuDisabled, 0 = Main, 1 = Sec, 2 = Tert
 };
