@@ -26,6 +26,10 @@ AAssessmentTrigger::AAssessmentTrigger()
 	WidgetComponent->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
 	WidgetComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
+	GlowLight = CreateDefaultSubobject<UPointLightComponent>(TEXT("Glow"));
+	GlowLight->SetupAttachment(Root);
+	GlowLight->SetVisibility(false);
+
 	bIsHovered = false;
 }
 
@@ -50,9 +54,15 @@ void AAssessmentTrigger::SetHovered(bool bHovered)
 	bIsHovered = bHovered;
 
 	if (bHovered)
+	{
 		WidgetComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+		GlowLight->SetVisibility(false);
+	}
 	else
+	{
 		WidgetComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		GlowLight->SetVisibility(true);
+	}
 }
 
 void AAssessmentTrigger::EnableCollision(bool bEnable)
@@ -61,12 +71,14 @@ void AAssessmentTrigger::EnableCollision(bool bEnable)
 	{
 		BoxCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 		WidgetComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+		GlowLight->SetVisibility(true);
 	}
 	else
 	{
 		BoxCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		WidgetComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		WidgetComponent->SetVisibility(false);
+		GlowLight->SetVisibility(false);
 		bIsHovered = false;
 	}
 }

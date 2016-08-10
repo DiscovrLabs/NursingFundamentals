@@ -36,6 +36,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 		UWidgetComponent* WidgetComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lighting")
+		UPointLightComponent* GlowLight;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Root")
 		bool bIsHovered;
 };
