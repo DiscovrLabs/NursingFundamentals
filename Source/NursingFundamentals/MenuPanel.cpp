@@ -12,15 +12,15 @@ AMenuPanel::AMenuPanel()
 	PrimaryActorTick.bCanEverTick = true;
 
 	MainClickableContainersLocations.Add(FVector2D(0, 7.5));
-	MainClickableContainersLocations.Add(FVector2D(-4.5, 0));
 	MainClickableContainersLocations.Add(FVector2D(4.5, 0));
+	MainClickableContainersLocations.Add(FVector2D(-4.5, 0));
 	MainContainerMode = -1;
 	HierarchyLevel = -1;
 
-	SecClickableContainersLocations.Add(FVector2D(0, 7.5));
-	SecClickableContainersLocations.Add(FVector2D(-4.5, 0));
-	SecClickableContainersLocations.Add(FVector2D(4.5, 0));
-	SecClickableContainersLocations.Add(FVector2D(7, 0));
+	SecClickableContainersLocations.Add(FVector2D(-4.0, 4.0));
+	SecClickableContainersLocations.Add(FVector2D(4.0, 4.0));
+	SecClickableContainersLocations.Add(FVector2D(-4.0, -4.0));
+	SecClickableContainersLocations.Add(FVector2D(4.0, -4.0));
 	SecContainerMode = 0;
 }
 
@@ -28,23 +28,39 @@ AMenuPanel::AMenuPanel()
 void AMenuPanel::BeginPlay()
 {
 	Super::BeginPlay();
-	TArray<AActor*> TempArray;
+
+	TArray<AClickableWidgetContainer*> TempArray;
 	for (int i = 0; i < MainClickableContainersLocations.Num(); i++)
 	{
-		TempArray.Add(GetWorld()->SpawnActor(ClickaleContainerBP));
+		TempArray.Add(GetWorld()->SpawnActor<AClickableWidgetContainer>(ClickableContainerBP));
 		TempArray[i]->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale, NAME_None);
 		TempArray[i]->SetActorRotation(GetActorRotation());
 		TempArray[i]->AddActorLocalOffset(FVector(0.f, MainClickableContainersLocations[i].X, MainClickableContainersLocations[i].Y));
-		MainClickableContainers.Add(Cast<AClickableWidgetContainer>(TempArray[i]));
+		MainClickableContainers.Add(TempArray[i]);
 		MainClickableContainers[i]->LocalOffset = FVector(0.f, MainClickableContainersLocations[i].X, MainClickableContainersLocations[i].Y);
 		MainClickableContainers[i]->SetStartLocation(MainClickableContainers[i]->LocalOffset);
-		MainClickableContainers[i]->ContainerNum = i;
+		MainClickableContainers[i]->ContainerNum = i + 1;
 		MainClickableContainers[i]->ParentPanel = this;
 	}
-	SetupClickableWidgets(ButtonImages);
+
+	TempArray.Empty();
+	for (int i = 0; i < SecClickableContainersLocations.Num(); i++)
+	{
+		TempArray.Add(GetWorld()->SpawnActor<AClickableWidgetContainer>(ClickableContainerBP));
+		TempArray[i]->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale, NAME_None);
+		TempArray[i]->SetActorRotation(GetActorRotation());
+		TempArray[i]->AddActorLocalOffset(FVector(0.f, SecClickableContainersLocations[i].X, SecClickableContainersLocations[i].Y));
+		SecClickableContainers.Add(TempArray[i]);
+		SecClickableContainers[i]->LocalOffset = FVector(0.f, SecClickableContainersLocations[i].X, SecClickableContainersLocations[i].Y);
+		SecClickableContainers[i]->SetStartLocation(SecClickableContainers[i]->LocalOffset);
+		SecClickableContainers[i]->ContainerNum = i + 4;
+		SecClickableContainers[i]->ParentPanel = this;
+	}
+	SetupClickableWidgets(MainImages, MainNames, SecNames);
+
 	this->AttachToComponent(Cast<ADiscovrPawn>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0))->GetHandMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, "ThumbSocket");
-	EnableClickableContainers(false, 0);
-	//EnableButtons(false);
+	EnableUISet(false, 0);
+	EnableUISet(false, 1);
 }
 
 // Called every frame
@@ -71,10 +87,11 @@ bool AMenuPanel::ClickMenuButton()
 	{
 		EnableMode(MainContainerMode);
 	}
+	UE_LOG(LogTemp, Warning, TEXT("Return True"));
 	return true;
 }
 
-void AMenuPanel::EnableClickableContainers(bool bEnable, int32 Set)
+void AMenuPanel::EnableUISet(bool bEnable, int32 Set)
 {
 	if (bEnable)
 	{
@@ -114,58 +131,92 @@ void AMenuPanel::EnableClickableContainers(bool bEnable, int32 Set)
 				Container->EnableCollision(false);
 			}
 			break;
+		case 2:
+			if (RolodexMenu)
+			{
+				RolodexMenu->DestroyMenu();
+			}
+			break;
 		}
 	}
 }
 
 void AMenuPanel::ContainerClicked(int32 ContainerNum)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Tried to Click"));
 	if (Manager)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Clicked"));
 		EnableMode(ContainerNum);
 	}
 }
 
 void AMenuPanel::EnableMode(int32 Mode)
 {
+	TArray<TArray<FString>> TempArray;
+	TempArray.Add(TextArray1);
+	TempArray.Add(TextArray2);
+	TempArray.Add(TextArray3);
+	TempArray.Add(TextArray4);
 	switch (Mode)
 	{
 	case -1: // Not Visible
-		EnableClickableContainers(false, 0);
+		EnableUISet(false, 0);
 		MainContainerMode = -1;
 		HierarchyLevel = -1;
+		UE_LOG(LogTemp, Warning, TEXT("Case: -1"));
 		break;
 	case 0: // Not Selected
-		EnableClickableContainers(true, 0);
+		EnableUISet(true, 0);
 		if(SecContainerMode != -1)
-			EnableClickableContainers(false, 1);
+			EnableUISet(false, 1);
 		MainContainerMode = 0;
 		HierarchyLevel = 0;
+		Manager->EnableAssessments(false);
+		UE_LOG(LogTemp, Warning, TEXT("Case: 0"));
 		break;
 	case 1: // Communication
-		EnableClickableContainers(false, 0);
-		EnableClickableContainers(true, 1);
+		EnableUISet(false, 0);
+		EnableUISet(false, 2);
+		EnableUISet(true, 1);
 		MainContainerMode = 1;
 		HierarchyLevel = 1;
+		UE_LOG(LogTemp, Warning, TEXT("Case: 1"));
 		break;
 	case 2: // Assessment
+		EnableUISet(false, 0);
 		Manager->EnableAssessments(true);
 		MainContainerMode = 2;
 		HierarchyLevel = 1;
+		UE_LOG(LogTemp, Warning, TEXT("Case: 2"));
 		break;
 	case 3: // Intervention
-		MainContainerMode = 3;
-		HierarchyLevel = 1;
+		//MainContainerMode = 3;
+		//HierarchyLevel = 1;
+		UE_LOG(LogTemp, Warning, TEXT("Case: 3"));
 		break;
 	case 4:
 	case 5:
 	case 6:
 	case 7:
-		EnableClickableContainers(false, 1);
+		RolodexMenu = GetWorld()->SpawnActor<ARolodexMenu>(RolodexMenuBP);
+		RolodexMenu->AttachToActor(this, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+		RolodexMenu->SetActorScale3D(FVector(0.04f));
+		RolodexMenu->InitializeMenu(TempArray[Mode - 4]);
+		EnableUISet(false, 1);
 		SecContainerMode = Mode;
 		HierarchyLevel = 2;
+		UE_LOG(LogTemp, Warning, TEXT("Case: 4+"));
 		break;
 	default:
 		break;
+	}
+}
+
+void AMenuPanel::TurnRolodex(bool bRotateDown)
+{
+	if (RolodexMenu)
+	{
+		RolodexMenu->RotateMenu(bRotateDown);
 	}
 }

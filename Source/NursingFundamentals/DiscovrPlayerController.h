@@ -34,6 +34,7 @@ protected:
 	bool bLGrabbing;
 	bool bRGrabbing;
 	bool bMenuEnabled;
+	bool bKeepMenu;
 
 	void LSelect();
 	void RSelect();
@@ -42,4 +43,6 @@ protected:
 	void ToggleMenu();
 	void EnableRLaser();
 	void DisableRLaser();
+	void ScrollDown();
+	void ScrollUp();
 };

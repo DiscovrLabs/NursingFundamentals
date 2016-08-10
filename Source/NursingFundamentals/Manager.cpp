@@ -17,6 +17,7 @@ void AManager::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	SetupAssessmentTriggers(AssessmentInfo);
 }
 
 // Called every frame
@@ -32,6 +33,7 @@ void AManager::EnableAssessments(bool bEnable)
 	{
 		if (Trigger)
 		{
+			UE_LOG(LogTemp, Warning, TEXT("Enabled Assessment Trigger: %d"), bEnable);
 			Trigger->EnableCollision(bEnable);
 		}
 	}

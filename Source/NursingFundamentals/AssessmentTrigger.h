@@ -27,12 +27,15 @@ public:
 	void EnableCollision(bool bEnable);
 
 protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Root")
+		USceneComponent* Root;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Collision")
 		UBoxComponent* BoxCollider;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 		UWidgetComponent* WidgetComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
-		FString Information;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Root")
+		bool bIsHovered;
 };

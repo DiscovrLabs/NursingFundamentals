@@ -14,6 +14,8 @@ void ADiscovrPlayerController::BeginPlay()
 	TArray<AActor*> TempArray;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AMenuPanel::StaticClass(), TempArray);
 	MenuPanel = Cast<AMenuPanel>(TempArray[0]);
+
+	bKeepMenu = true;
 }
 
 void ADiscovrPlayerController::Tick(float DeltaTime)
@@ -31,6 +33,8 @@ void ADiscovrPlayerController::SetupInputComponent()
 	InputComponent->BindAction("RSelect", IE_Pressed, this, &ADiscovrPlayerController::RSelect);
 	InputComponent->BindAction("RSelect", IE_Released, this, &ADiscovrPlayerController::RDrop);
 	InputComponent->BindAction("Menu", IE_Pressed, this, &ADiscovrPlayerController::ToggleMenu);
+	InputComponent->BindAction("RightUp", IE_Pressed, this, &ADiscovrPlayerController::ScrollUp);
+	InputComponent->BindAction("RightDown", IE_Pressed, this, &ADiscovrPlayerController::ScrollDown);
 }
 
 void ADiscovrPlayerController::LSelect()
@@ -39,7 +43,7 @@ void ADiscovrPlayerController::LSelect()
 	{
 		Player->LeftPalm->GrabItem();
 		Player->SetGrabbing(true, true);
-		bLGrabbing = true;
+		bLGrabbing = false;
 	}
 }
 
@@ -75,15 +79,19 @@ void ADiscovrPlayerController::ToggleMenu()
 {
 	if (!bRGrabbing && !bLGrabbing)
 	{
-		if (bMenuEnabled)
+		UE_LOG(LogTemp, Warning, TEXT("bMenuEnabled = %d"), bMenuEnabled);
+		bKeepMenu = MenuPanel->ClickMenuButton();
+		if (bKeepMenu)
 		{
-			DisableRLaser();
-			bMenuEnabled = MenuPanel->ClickMenuButton();
+			EnableRLaser();
+			UE_LOG(LogTemp, Warning, TEXT("Enable Laser"));
+			bMenuEnabled = true;
 		}
 		else
 		{
-			EnableRLaser();
-			bMenuEnabled = MenuPanel->ClickMenuButton();
+			DisableRLaser();
+			UE_LOG(LogTemp, Warning, TEXT("Disable Laser"));
+			bMenuEnabled = false;
 		}
 	}
 }
@@ -98,4 +106,14 @@ void ADiscovrPlayerController::DisableRLaser()
 {
 	HUD->EnableLaser(false);
 	Player->SetPointing(false, false);
+}
+
+void ADiscovrPlayerController::ScrollDown()
+{
+	MenuPanel->TurnRolodex(true);
+}
+
+void ADiscovrPlayerController::ScrollUp()
+{
+	MenuPanel->TurnRolodex(false);
 }

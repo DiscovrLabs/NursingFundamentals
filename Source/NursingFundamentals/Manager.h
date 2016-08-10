@@ -24,6 +24,15 @@ public:
 	void EnableAssessments(bool bEnable);
 
 protected:
+	/**************************************************************************
+	* ASSESSMENT MENU
+	**************************************************************************/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 		TArray<AAssessmentTrigger*> AssessmentTriggers;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+		TArray<FString> AssessmentInfo;
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "UI")
+		void SetupAssessmentTriggers(const TArray<FString> &_Info);
 };
