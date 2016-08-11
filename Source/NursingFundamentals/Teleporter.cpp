@@ -19,6 +19,9 @@ ATeleporter::ATeleporter()
 	WidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetComponent"));
 	WidgetComponent->SetupAttachment(SphereCollider);
 
+	AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
+	AudioComp->AttachTo(RootComponent);
+
 	GazeTimer = 0;
 	bIsHovered = false;
 	bEnabled = true;
@@ -57,6 +60,7 @@ void ATeleporter::ClickButton()
 {
 	FVector PlayerLoc = Player->GetActorLocation();
 	Player->SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, PlayerLoc.Z));
+	AudioComp->Play();
 	EnableTeleporter(false);
 }
 

@@ -16,6 +16,7 @@ bool AChangingActor::SetCarried(bool bIsCarried, UGrabComponent* CarryingHand, b
 	{
 		if (bIsCarried)
 		{
+			AudioComp->Play();
 			ActorMesh->SetStaticMesh(GrabbedMesh);
 		}
 		else

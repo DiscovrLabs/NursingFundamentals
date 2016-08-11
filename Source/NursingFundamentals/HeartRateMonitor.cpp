@@ -14,7 +14,7 @@ bool AHeartRateMonitor::SetCarried(bool bIsCarried, UGrabComponent* CarryingHand
 	{
 		if (bIsCarried)
 		{
-			//AudioComp->Play();
+			AudioComp->Play();
 			CarryingHand->AttachObject(this, true);
 			AttachedHand = CarryingHand;
 		}

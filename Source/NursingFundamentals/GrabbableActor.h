@@ -52,4 +52,10 @@ protected:
 
 	UGrabComponent* AttachedHand;
 	bool bCanCarry;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+		UAudioComponent* AudioComp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+		USoundBase* GrabSound;
 };

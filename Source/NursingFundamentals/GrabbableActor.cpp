@@ -14,6 +14,9 @@ AGrabbableActor::AGrabbableActor()
 	RootComponent = ActorMesh;
 	ActorID = 99;
 
+	AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
+	AudioComp->AttachTo(RootComponent);
+
 	bCanCarry = false;
 }
 
@@ -21,6 +24,11 @@ AGrabbableActor::AGrabbableActor()
 void AGrabbableActor::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (GrabSound)
+	{
+		AudioComp->SetSound(GrabSound);
+	}
 	/*
 	TArray<AActor*> TempArray;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AScriptManager::StaticClass(), TempArray);
@@ -41,9 +49,10 @@ bool AGrabbableActor::SetCarried(bool bIsCarried, UGrabComponent* CarryingHand, 
 	{
 		if (bIsCarried)
 		{
-			//AudioComp->Play();
+			AudioComp->Play();
 			CarryingHand->AttachObject(this, true);
 			AttachedHand = CarryingHand;
+			UE_LOG(LogTemp, Warning, TEXT("Carried Object"));
 		}
 		else
 		{

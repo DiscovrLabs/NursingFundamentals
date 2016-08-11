@@ -49,4 +49,7 @@ protected:
 	// Helper function to modify blueprint widget
 	UFUNCTION(BlueprintImplementableEvent, Category = "WidgetData")
 		void SetWidgetHovered(bool bHovered);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+		UAudioComponent* AudioComp;
 };
