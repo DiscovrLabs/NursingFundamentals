@@ -200,8 +200,12 @@ void AMenuPanel::EnableMode(int32 Mode)
 	case 6:
 	case 7:
 		RolodexMenu = GetWorld()->SpawnActor<ARolodexMenu>(RolodexMenuBP);
-		RolodexMenu->AttachToActor(this, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+		RolodexMenu->SetActorLocation(GetActorLocation() + FVector(0, 0, 20.f));
+		RolodexMenu->SetActorRotation(FRotationMatrix::MakeFromX(UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->GetCameraLocation() - RolodexMenu->GetActorLocation()).Rotator());
 		RolodexMenu->SetActorScale3D(FVector(0.04f));
+		//RolodexMenu->SetActorRotation(RolodexMenu->GetActorRotation() + FRotator(0,180.f,0));
+		//RolodexMenu->AttachToActor(this, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+		//RolodexMenu->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 		RolodexMenu->InitializeMenu(TempArray[Mode - 4]);
 		EnableUISet(false, 1);
 		SecContainerMode = Mode;

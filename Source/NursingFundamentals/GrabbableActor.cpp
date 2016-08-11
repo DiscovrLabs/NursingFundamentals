@@ -87,3 +87,8 @@ void AGrabbableActor::TellManager()
 {
 	Manager->GamestateIncrement();
 }
+
+void AGrabbableActor::SetHighlighted()
+{
+	//ActorMesh->GetMaterial(0);
+}

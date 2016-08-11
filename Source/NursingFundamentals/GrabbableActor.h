@@ -38,6 +38,7 @@ public:
 	int32 GetActorID();
 	void SetCanCarry(bool A);
 	void SetManager(AScriptManager* NewManager);
+	void SetHighlighted();
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
