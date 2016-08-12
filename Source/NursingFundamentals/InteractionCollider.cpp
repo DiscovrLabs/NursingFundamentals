@@ -39,7 +39,7 @@ void AInteractionCollider::OnBeginOverlap(AActor* Actor, AActor * OtherActor)
 	AGrabbableActor* TempActor = Cast<AGrabbableActor>(OtherActor);
 	if (TempActor)
 	{
-		if (TempActor->GetActorID() == ColliderID)
+		if (TempActor->GetActorID() == ColliderID && TempActor->GetCarried())
 		{
 			TempActor->TriggerInteraction();
 		}

@@ -39,6 +39,7 @@ public:
 	void SetCanCarry(bool A);
 	void SetManager(AScriptManager* NewManager);
 	void SetHighlighted();
+	bool GetCarried();
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")

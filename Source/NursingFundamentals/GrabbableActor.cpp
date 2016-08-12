@@ -95,9 +95,24 @@ void AGrabbableActor::SetManager(AScriptManager* NewManager)
 void AGrabbableActor::TellManager()
 {
 	Manager->GamestateIncrement();
+	if (AttachedHand)
+	{
+		AttachedHand->SetHolding(false);
+	}
+	DetachFromHand();
 }
 
 void AGrabbableActor::SetHighlighted()
 {
 	//ActorMesh->GetMaterial(0);
+}
+
+bool AGrabbableActor::GetCarried()
+{
+	if (AttachedHand)
+	{
+		return true;
+	}
+
+	return false;
 }

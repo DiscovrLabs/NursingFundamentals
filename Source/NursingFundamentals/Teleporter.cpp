@@ -32,11 +32,17 @@ void ATeleporter::BeginPlay()
 {
 	Super::BeginPlay();
 	Player = Cast<ADiscovrPawn>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
-	WidgetComponent->SetHiddenInGame(false);
+	if(WidgetComponent)
+		WidgetComponent->SetHiddenInGame(false);
 
 	if (!bEnabled)
 	{
 		EnableTeleporter(false);
+	}
+
+	if (GrabSound)
+	{
+		AudioComp->SetSound(GrabSound);
 	}
 }
 

@@ -2,14 +2,14 @@
 
 #pragma once
 
-#include "GrabbableActor.h"
+#include "GrabbablePhysicsActor.h"
 #include "HeartRateMonitor.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class NURSINGFUNDAMENTALS_API AHeartRateMonitor : public AGrabbableActor
+class NURSINGFUNDAMENTALS_API AHeartRateMonitor : public AGrabbablePhysicsActor
 {
 	GENERATED_BODY()
 	
