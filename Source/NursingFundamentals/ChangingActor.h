@@ -19,6 +19,9 @@ public:
 
 	virtual bool SetCarried(bool bIsCarried, UGrabComponent* CarryingHand, bool bLeftHand) override;
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Tutorial")
+		void TellManager(bool bDropped);
+
 protected:
 	UStaticMesh* StartMesh;
 

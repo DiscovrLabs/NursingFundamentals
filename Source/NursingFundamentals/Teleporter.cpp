@@ -20,7 +20,7 @@ ATeleporter::ATeleporter()
 	WidgetComponent->SetupAttachment(SphereCollider);
 
 	AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
-	AudioComp->AttachTo(RootComponent);
+	AudioComp->SetupAttachment(RootComponent);
 
 	GazeTimer = 0;
 	bIsHovered = false;
@@ -85,17 +85,22 @@ void ATeleporter::SetHovered(bool bHovered)
 	}
 }
 
+void ATeleporter::SetManager(AActor * NewManager)
+{
+	TeleportManager = NewManager;
+}
+
 void ATeleporter::EnableTeleporter(bool Enable)
 {
 	if (Enable)
 	{
 		SphereCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-		WidgetComponent->SetHiddenInGame(false);
+		SetActorHiddenInGame(false);
 	}
 	else
 	{
 		SphereCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		WidgetComponent->SetHiddenInGame(true);
+		SetActorHiddenInGame(true);
 		Cast<ATeleportManager>(TeleportManager)->SetDisabledTeleporter(this);
 	}
 }

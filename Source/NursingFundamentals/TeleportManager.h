@@ -21,8 +21,21 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
+	// Spanws all Teleporters
+	void SpawnTeleporters();
+
+	//Spawns a specific Teleporter
+	void SpawnTeleporter(int32 TeleporterNum, bool bEnabled = true);
 	void SetDisabledTeleporter(ATeleporter* NewTeleporter);
 
 protected:
 	ATeleporter* DisabledTeleporter;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+		AActor* TutorialManager;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+		TSubclassOf<ATeleporter> TeleporterBP;
+
+	TArray<FVector> TeleportLocations;
 };

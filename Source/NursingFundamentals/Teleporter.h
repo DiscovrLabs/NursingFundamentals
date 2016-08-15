@@ -27,6 +27,7 @@ public:
 	void ClickButton();
 	virtual void SetHovered(bool bHovered) override;
 
+	void SetManager(AActor* NewManager);
 	void EnableTeleporter(bool Enable);
 
 protected:

@@ -5,10 +5,11 @@
 #include "GameFramework/Actor.h"
 #include "InteractableObject.h"
 #include "Components/WidgetComponent.h"
+#include "WidgetContainer.h"
 #include "ClickableWidgetContainer.generated.h"
 
 UCLASS()
-class NURSINGFUNDAMENTALS_API AClickableWidgetContainer : public AActor, public IInteractableObject
+class NURSINGFUNDAMENTALS_API AClickableWidgetContainer : public AWidgetContainer, public IInteractableObject
 {
 	GENERATED_BODY()
 	
@@ -30,12 +31,6 @@ public:
 	virtual void DisableContainer();
 	void EnableCollision(bool bEnable);
 	void SetStartLocation(FVector Start);
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
-		UWidgetComponent* WidgetComponent;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Root")
-		USceneComponent* Root;
 
 	FVector LocalOffset;
 	int32 ContainerNum;
