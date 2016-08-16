@@ -20,6 +20,14 @@ void ATextController::BeginPlay()
 	GetWorldTimerManager().SetTimer(CursorTimer, this, &ATextController::NeutralCursor, 0.7f, true);
 }
 
+// Called every frame
+void ATextController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	SetActorRotation(FRotationMatrix::MakeFromX(UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->GetCameraLocation() - GetActorLocation()).Rotator());
+}
+
+
 void ATextController::SetText(FString _Name, FString _Desc)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Name: %s , Desc: %s"), *_Name, *_Desc);
@@ -102,13 +110,13 @@ void ATextController::BlinkingCursor()
 {
 	if (bCursorOn)
 	{
-		CurrentString = CurrentString.LeftChop(1);
+		CurrentString = CurrentString.LeftChop(2);
 		(bTypingName) ? UpdateText(CurrentString) : UpdateDesc(CurrentString);
 		bCursorOn = false;
 	}
 	else
 	{
-		CurrentString.Append(L"█");
+		CurrentString.Append(L" █");
 		(bTypingName) ? UpdateText(CurrentString) : UpdateDesc(CurrentString);
 		bCursorOn = true;
 	}

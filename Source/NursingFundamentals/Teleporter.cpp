@@ -54,7 +54,7 @@ void ATeleporter::Tick( float DeltaTime )
 	if (bIsHovered)
 	{
 		GazeTimer += DeltaTime;
-		if (GazeTimer >= 2.5f)
+		if (GazeTimer >= 0.5f)
 		{
 			ClickButton();
 		}

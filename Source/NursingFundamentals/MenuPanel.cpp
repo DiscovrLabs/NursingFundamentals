@@ -2,6 +2,7 @@
 
 #include "NursingFundamentals.h"
 #include "DiscovrPawn.h"
+#include "TutorialManager.h"
 #include "MenuPanel.h"
 
 
@@ -22,6 +23,8 @@ AMenuPanel::AMenuPanel()
 	SecClickableContainersLocations.Add(FVector2D(-4.0, -4.0));
 	SecClickableContainersLocations.Add(FVector2D(4.0, -4.0));
 	SecContainerMode = 0;
+
+	bTutorial = false;
 }
 
 // Called when the game starts or when spawned
@@ -76,18 +79,29 @@ bool AMenuPanel::ClickMenuButton()
 	if (HierarchyLevel == 0)
 	{
 		EnableMode(-1);
+		if (bTutorial)
+		{
+			Cast<ATutorialManager>(TutorialManager)->ButtonClicked(0);
+			//UE_LOG(LogTemp, Warning, TEXT("Charmander"));
+		}
+		UE_LOG(LogTemp, Warning, TEXT("Charmander"));
 		return false;
 	}
 	// if menu is off or player is in the 2nd level of the menu, turn on the main level of the menu. else if player is in the 3rd level of the menu send them back to the 2nd
 	if (HierarchyLevel == -1 || HierarchyLevel == 1)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Squirtle"));
 		EnableMode(0);
+		if (bTutorial)
+		{
+			Cast<ATutorialManager>(TutorialManager)->ButtonClicked(0);
+			//UE_LOG(LogTemp, Warning, TEXT("Charmander"));
+		}
 	}
 	else if (HierarchyLevel == 2)
 	{
 		EnableMode(MainContainerMode);
 	}
-	UE_LOG(LogTemp, Warning, TEXT("Return True"));
 	return true;
 }
 
@@ -143,11 +157,11 @@ void AMenuPanel::EnableUISet(bool bEnable, int32 Set)
 
 void AMenuPanel::ContainerClicked(int32 ContainerNum)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Tried to Click"));
 	if (Manager)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Clicked"));
 		EnableMode(ContainerNum);
+		if(bTutorial)
+			Cast<ATutorialManager>(TutorialManager)->ButtonClicked(ContainerNum);
 	}
 }
 
@@ -164,7 +178,7 @@ void AMenuPanel::EnableMode(int32 Mode)
 		EnableUISet(false, 0);
 		MainContainerMode = -1;
 		HierarchyLevel = -1;
-		UE_LOG(LogTemp, Warning, TEXT("Case: -1"));
+		//UE_LOG(LogTemp, Warning, TEXT("Case: -1"));
 		break;
 	case 0: // Not Selected
 		EnableUISet(true, 0);
@@ -173,7 +187,7 @@ void AMenuPanel::EnableMode(int32 Mode)
 		MainContainerMode = 0;
 		HierarchyLevel = 0;
 		Manager->EnableAssessments(false);
-		UE_LOG(LogTemp, Warning, TEXT("Case: 0"));
+		//UE_LOG(LogTemp, Warning, TEXT("Case: 0"));
 		break;
 	case 1: // Communication
 		EnableUISet(false, 0);
@@ -181,19 +195,19 @@ void AMenuPanel::EnableMode(int32 Mode)
 		EnableUISet(true, 1);
 		MainContainerMode = 1;
 		HierarchyLevel = 1;
-		UE_LOG(LogTemp, Warning, TEXT("Case: 1"));
+		//UE_LOG(LogTemp, Warning, TEXT("Case: 1"));
 		break;
 	case 2: // Assessment
 		EnableUISet(false, 0);
 		Manager->EnableAssessments(true);
 		MainContainerMode = 2;
 		HierarchyLevel = 1;
-		UE_LOG(LogTemp, Warning, TEXT("Case: 2"));
+		//UE_LOG(LogTemp, Warning, TEXT("Case: 2"));
 		break;
 	case 3: // Intervention
 		//MainContainerMode = 3;
 		//HierarchyLevel = 1;
-		UE_LOG(LogTemp, Warning, TEXT("Case: 3"));
+		//UE_LOG(LogTemp, Warning, TEXT("Case: 3"));
 		break;
 	case 4:
 	case 5:
@@ -210,11 +224,16 @@ void AMenuPanel::EnableMode(int32 Mode)
 		EnableUISet(false, 1);
 		SecContainerMode = Mode;
 		HierarchyLevel = 2;
-		UE_LOG(LogTemp, Warning, TEXT("Case: 4+"));
+		//UE_LOG(LogTemp, Warning, TEXT("Case: 4+"));
 		break;
 	default:
 		break;
 	}
+}
+
+void AMenuPanel::ShowHealthRecord()
+{
+	Cast<ATutorialManager>(TutorialManager)->ButtonClicked(99);
 }
 
 void AMenuPanel::TurnRolodex(bool bRotateDown)
@@ -223,4 +242,15 @@ void AMenuPanel::TurnRolodex(bool bRotateDown)
 	{
 		RolodexMenu->RotateMenu(bRotateDown);
 	}
+}
+
+void AMenuPanel::EnableContianer(int32 ContainerNum, bool bEnable)
+{
+	MainClickableContainers[ContainerNum]->EnableCollision(bEnable);
+	//UE_LOG(LogTemp, Warning, TEXT("Bool = %d & Container = %d"), bEnable, ContainerNum);
+}
+
+void AMenuPanel::SetTutorial(bool bEnable)
+{
+	bTutorial = bEnable;
 }

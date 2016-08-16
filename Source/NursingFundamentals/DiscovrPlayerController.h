@@ -26,6 +26,12 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupInputComponent() override;
 
+	// Called to set bTutorial1
+	void SetTutorial1(bool bEnable);
+
+	// Called to set bTutorial2
+	void SetTutorial2(bool bEnable);
+
 protected:
 	ADiscovrPawn* Player;
 	ADiscovrHUD* HUD;
@@ -35,14 +41,17 @@ protected:
 	bool bRGrabbing;
 	bool bMenuEnabled;
 	bool bKeepMenu;
+	bool bTutorial1; // Used to stop or allow access to the menu based on the tutorial
+	bool bTutorial2; // Used to stop or allow access to the health record based on the tutorial
 
+	void ToggleMenu();
 	void LSelect();
 	void RSelect();
 	void LDrop();
 	void RDrop();
-	void ToggleMenu();
 	void EnableRLaser();
 	void DisableRLaser();
 	void ScrollDown();
 	void ScrollUp();
+	void ShowHealthRecord();
 };

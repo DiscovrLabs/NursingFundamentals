@@ -32,12 +32,20 @@ public:
 	void EnableUISet(bool bEnable, int32 Set); // if Set = 0 then MainContainers, if Set = 1 then SecContainers, if Set = 2 then TerContainers
 
 	void TurnRolodex(bool bRotateDown);
+	void EnableContianer(int32 ContainerNum, bool bEnable);
+	void SetTutorial(bool bEnable);
+	void ShowHealthRecord();
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI | Basic")
 		AManager* Manager;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI | Basic")
+		AActor* TutorialManager;
+
 	void EnableMode(int32 Mode);
+
+	bool bTutorial;
 
 	/**************************************************************************
 		* MAIN MENU

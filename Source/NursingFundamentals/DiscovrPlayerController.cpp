@@ -16,6 +16,7 @@ void ADiscovrPlayerController::BeginPlay()
 	MenuPanel = Cast<AMenuPanel>(TempArray[0]);
 
 	bKeepMenu = true;
+	bTutorial1 = bTutorial2 = false;
 }
 
 void ADiscovrPlayerController::Tick(float DeltaTime)
@@ -35,6 +36,17 @@ void ADiscovrPlayerController::SetupInputComponent()
 	InputComponent->BindAction("Menu", IE_Pressed, this, &ADiscovrPlayerController::ToggleMenu);
 	InputComponent->BindAction("RightUp", IE_Pressed, this, &ADiscovrPlayerController::ScrollUp);
 	InputComponent->BindAction("RightDown", IE_Pressed, this, &ADiscovrPlayerController::ScrollDown);
+	InputComponent->BindAction("Pause", IE_Pressed, this, &ADiscovrPlayerController::ShowHealthRecord);
+}
+
+void ADiscovrPlayerController::SetTutorial1(bool bEnable)
+{
+	bTutorial1 = bEnable;
+}
+
+void ADiscovrPlayerController::SetTutorial2(bool bEnable)
+{
+	bTutorial2 = bEnable;
 }
 
 void ADiscovrPlayerController::LSelect()
@@ -77,7 +89,7 @@ void ADiscovrPlayerController::RDrop()
 
 void ADiscovrPlayerController::ToggleMenu()
 {
-	if (!bRGrabbing && !bLGrabbing)
+	if (!bRGrabbing && !bLGrabbing && !bTutorial1)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("bMenuEnabled = %d"), bMenuEnabled);
 		bKeepMenu = MenuPanel->ClickMenuButton();
@@ -116,4 +128,13 @@ void ADiscovrPlayerController::ScrollDown()
 void ADiscovrPlayerController::ScrollUp()
 {
 	MenuPanel->TurnRolodex(false);
+}
+
+void ADiscovrPlayerController::ShowHealthRecord()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Psyduck"));
+	if (!bTutorial2)
+	{
+		MenuPanel->ShowHealthRecord();
+	}
 }

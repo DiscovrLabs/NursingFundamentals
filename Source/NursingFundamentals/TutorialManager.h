@@ -7,6 +7,9 @@
 #include "TeleportManager.h"
 #include "TextController.h"
 #include "ChangingActor.h"
+#include "DiscovrPlayerController.h"
+#include "MenuPanel.h"
+#include "ClickableActor.h"
 #include "TutorialManager.generated.h"
 
 UCLASS()
@@ -31,8 +34,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Tutorial")
 		void StethoscopeDropped(bool bDropped);
 
+	void ButtonClicked(int32 ButtonNum);
+
 protected:
 	void GamestateIncrement();
+
+	ADiscovrPlayerController* PlayerController;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+		AMenuPanel* MenuPanel;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 		ATeleportManager* TeleportManager;
@@ -43,8 +53,13 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 		AChangingActor* Stethoscope;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+		AClickableActor* Patient;
+
 	TArray<FString> TutorialText;
 
 	int32 Gamestate;
 	int32 TimesTeleported; // Number of times the player teleported
+	bool bButttonOneClicked;
+	bool bButtonTwoClicked;
 };
