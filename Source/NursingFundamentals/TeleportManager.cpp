@@ -51,7 +51,7 @@ void ATeleportManager::SpawnTeleporter(int32 TeleporterNum, bool bEnabled)
 	Temp->SetManager(this);
 
 	if (!bEnabled)
-		SetDisabledTeleporter(Temp);
+		Temp->EnableTeleporter(false);
 }
 
 void ATeleportManager::SetDisabledTeleporter(ATeleporter* NewTeleporter)
@@ -71,7 +71,6 @@ void ATeleportManager::SetDisabledTeleporter(ATeleporter* NewTeleporter)
 			DisabledTeleporter->EnableTeleporter(true);
 		}
 		DisabledTeleporter = NewTeleporter;
-		DisabledTeleporter->EnableTeleporter(false);
 	}
 }
 
