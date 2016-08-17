@@ -2,14 +2,14 @@
 
 #pragma once
 
-#include "GrabbableActor.h"
+#include "GrabbablePhysicsActor.h"
 #include "ChangingActor.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class NURSINGFUNDAMENTALS_API AChangingActor : public AGrabbableActor
+class NURSINGFUNDAMENTALS_API AChangingActor : public AGrabbablePhysicsActor
 {
 	GENERATED_BODY()
 

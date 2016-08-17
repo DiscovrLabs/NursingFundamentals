@@ -57,6 +57,7 @@ void ATutorialManager::BeginPlay()
 		}
 		Stethoscope->SetCanCarry(false);
 		TextController->SetText("Welcome to Nursing Fundamentals", TutorialText[0]);
+		TeleportManager->SetTutorial(true);
 		TeleportManager->SpawnTeleporter(0, false);
 		TeleportManager->SpawnTeleporter(3);
 	}

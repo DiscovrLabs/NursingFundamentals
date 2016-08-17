@@ -51,33 +51,40 @@ void AGrabbablePhysicsActor::Tick(float DeltaSeconds)
 
 bool AGrabbablePhysicsActor::SetCarried(bool bIsCarried, UGrabComponent * CarryingHand, bool bLeftHand)
 {
-	if (bIsCarried)
+	if (bCanCarry)
 	{
-		AudioComp->Play();
-		ActorMesh->SetSimulatePhysics(false);
-		AvgSpeed = 0.0f;
-		AvgDirection = FVector::ZeroVector;
-		PreviousPos = GetActorLocation();
-		bCalcPhysics = true;
-		bFirstFrame = true;
+		if (bIsCarried)
+		{
+			AudioComp->Play();
+			ActorMesh->SetSimulatePhysics(false);
+			AvgSpeed = 0.0f;
+			AvgDirection = FVector::ZeroVector;
+			PreviousPos = GetActorLocation();
+			bCalcPhysics = true;
+			bFirstFrame = true;
+		}
+		bool bGrabbed = Super::SetCarried(bIsCarried, CarryingHand, bLeftHand);
+
+		if (!bIsCarried)
+		{
+			ActorMesh->SetSimulatePhysics(true);
+			bCalcPhysics = false;
+			AddVelocity(AvgDirection * AvgSpeed);
+		}
+
+		if (!bGrabbed)
+		{
+			ActorMesh->SetSimulatePhysics(true);
+			bCalcPhysics = false;
+		}
+
+		return bGrabbed;
 	}
-
-	bool bGrabbed = Super::SetCarried(bIsCarried, CarryingHand, bLeftHand);
-
-	if (!bIsCarried)
+	else
 	{
-		ActorMesh->SetSimulatePhysics(true);
-		bCalcPhysics = false;
-		AddVelocity(AvgDirection * AvgSpeed);
+		//Play error sound
+		return false;
 	}
-
-	if (!bGrabbed)
-	{
-		ActorMesh->SetSimulatePhysics(true);
-		bCalcPhysics = false;
-	}
-
-	return bGrabbed;
 }
 
 void AGrabbablePhysicsActor::ResetActor()

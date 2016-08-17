@@ -28,6 +28,8 @@ public:
 	void SpawnTeleporter(int32 TeleporterNum, bool bEnabled = true);
 	void SetDisabledTeleporter(ATeleporter* NewTeleporter);
 
+	void SetTutorial(bool bEnable);
+
 protected:
 	ATeleporter* DisabledTeleporter;
 
@@ -38,4 +40,5 @@ protected:
 		TSubclassOf<ATeleporter> TeleporterBP;
 
 	TArray<FVector> TeleportLocations;
+	bool bTutorial;
 };

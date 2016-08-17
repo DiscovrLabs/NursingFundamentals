@@ -5,5 +5,5 @@
 
 UDiscovrGameInstance::UDiscovrGameInstance()
 {
-	bTutorial = true;
+	bTutorial = false;
 }

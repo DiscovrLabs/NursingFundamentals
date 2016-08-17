@@ -12,9 +12,9 @@ AMenuPanel::AMenuPanel()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	MainClickableContainersLocations.Add(FVector2D(0, 7.5));
-	MainClickableContainersLocations.Add(FVector2D(4.5, 0));
-	MainClickableContainersLocations.Add(FVector2D(-4.5, 0));
+	MainClickableContainersLocations.Add(FVector2D(0, 14.5));
+	MainClickableContainersLocations.Add(FVector2D(9, 0));
+	MainClickableContainersLocations.Add(FVector2D(-9, 0));
 	MainContainerMode = -1;
 	HierarchyLevel = -1;
 

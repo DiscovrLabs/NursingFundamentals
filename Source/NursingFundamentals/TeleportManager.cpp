@@ -16,6 +16,8 @@ ATeleportManager::ATeleportManager()
 	TeleportLocations.Add(FVector(-5.5f, 449.f, 170.f));
 	TeleportLocations.Add(FVector(152.f, -248.f, 170.f));
 	TeleportLocations.Add(FVector(-156.f, 302.f, 170.f));
+
+	bTutorial = false;
 }
 
 // Called when the game starts or when spawned
@@ -35,7 +37,10 @@ void ATeleportManager::SpawnTeleporters()
 {
 	for (int i = 0; i < TeleportLocations.Num(); i++)
 	{
-		SpawnTeleporter(i);
+		if (i == 0)
+			SpawnTeleporter(i, false);
+		else
+			SpawnTeleporter(i);
 	}
 }
 
@@ -46,17 +51,18 @@ void ATeleportManager::SpawnTeleporter(int32 TeleporterNum, bool bEnabled)
 	Temp->SetManager(this);
 
 	if (!bEnabled)
-		Temp->EnableTeleporter(false);
+		SetDisabledTeleporter(Temp);
 }
 
 void ATeleportManager::SetDisabledTeleporter(ATeleporter* NewTeleporter)
 {
-	if (TutorialManager)
+	if (bTutorial)
 	{
 		if (DisabledTeleporter && Cast<ATutorialManager>(TutorialManager)->PlayerTeleported())
 		{
 			DisabledTeleporter->EnableTeleporter(true);
 		}
+		DisabledTeleporter = NewTeleporter;
 	}
 	else
 	{
@@ -64,6 +70,12 @@ void ATeleportManager::SetDisabledTeleporter(ATeleporter* NewTeleporter)
 		{
 			DisabledTeleporter->EnableTeleporter(true);
 		}
-	}
 		DisabledTeleporter = NewTeleporter;
+		DisabledTeleporter->EnableTeleporter(false);
+	}
+}
+
+void ATeleportManager::SetTutorial(bool bEnable)
+{
+	bTutorial = bEnable;
 }
