@@ -20,14 +20,35 @@ void UGrabComponent::BeginPlay()
 void UGrabComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	if (HoldTargets.Num() > 0 && !bHoldingItem)
+	{
+		AActor* TempActor = FindClosestToPalm();
+		if (HighlightedItem != TempActor)
+		{
+			if (HighlightedItem)
+			{
+				Cast<AGrabbableActor>(HighlightedItem)->SetHighlighted(false);
+			}
+			Cast<AGrabbableActor>(TempActor)->SetHighlighted(true);
+			HighlightedItem = TempActor;
+		}
+	}
 }
 
 void UGrabComponent::GrabItem()
 {
 	if (HoldTargets.Num() > 0)
 	{
-		HeldItem = FindClosestToPalm();
+		HeldItem = HighlightedItem;
 		bHoldingItem = Cast<AGrabbableActor>(HeldItem)->SetCarried(true, this, bLeftHand);
+
+		if (bHoldingItem)
+		{
+			UGameplayStatics::GetPlayerController(GetWorld(), 0)->ClientPlayForceFeedback(HapticEffect, false, FName("Grab"));
+			Cast<AGrabbableActor>(HighlightedItem)->SetHighlighted(false);
+			HighlightedItem = NULL;
+		}
 	}
 	else
 	{
@@ -111,6 +132,11 @@ void UGrabComponent::OnEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* O
 {
 	if (HoldTargets.Contains(OtherActor))
 	{
+		if (HighlightedItem == OtherActor)
+		{
+			Cast<AGrabbableActor>(OtherActor)->SetHighlighted(false);
+			HighlightedItem = NULL;
+		}
 		HoldTargets.Remove(OtherActor);
 	}
 }

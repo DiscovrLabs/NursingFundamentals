@@ -38,7 +38,7 @@ public:
 	int32 GetActorID();
 	void SetCanCarry(bool A);
 	void SetManager(AScriptManager* NewManager);
-	void SetHighlighted();
+	virtual void SetHighlighted(bool bHighlighted);
 	bool GetCarried();
 
 protected:

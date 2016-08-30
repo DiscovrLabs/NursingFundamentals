@@ -12,6 +12,13 @@ AClickableActor::AClickableActor()
 	BoxCollider->SetupAttachment(Mesh);
 }
 
+void AClickableActor::BeginPlay()
+{
+	Super::BeginPlay();
+	//Mesh->CreateDynamicMaterialInstance(2);
+	//Mesh->SetVectorParameterValueOnMaterials("Highlight", FVector::ZeroVector);
+}
+
 bool AClickableActor::SetCarried(bool bIsCarried, UGrabComponent* CarryingHand, bool bLeftHand)
 {
 	if (bIsCarried && !bSwapped)
@@ -21,4 +28,21 @@ bool AClickableActor::SetCarried(bool bIsCarried, UGrabComponent* CarryingHand, 
 		Manager->GamestateIncrement();
 	}
 	return false;
+}
+
+void AClickableActor::SetHighlighted(bool bHighlighted)
+{
+	/*
+	if (!bSwapped)
+	{
+		if (bHighlighted)
+		{
+			Mesh->SetVectorParameterValueOnMaterials("Highlight", FVector(1, 0.892, 0.12));
+		}
+		else
+		{
+			Mesh->SetVectorParameterValueOnMaterials("Highlight", FVector::ZeroVector);
+		}
+	}
+	*/
 }

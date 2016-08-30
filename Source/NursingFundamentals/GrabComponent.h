@@ -35,7 +35,11 @@ public:
 protected:
 	TArray<AActor*> HoldTargets;
 	AActor* HeldItem;
+	AActor* HighlightedItem;
 	bool bHoldingItem;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Haptic")
+		UForceFeedbackEffect* HapticEffect;
 
 	AActor* FindClosestToPalm();
 	UFUNCTION()

@@ -12,27 +12,15 @@ bool AHeartRateMonitor::SetCarried(bool bIsCarried, UGrabComponent* CarryingHand
 {
 	if (bCanCarry)
 	{
-		if (bIsCarried)
+		if (!bIsCarried)
 		{
-			AudioComp->Play();
-			CarryingHand->AttachObject(this, true);
-			AttachedHand = CarryingHand;
-		}
-		else
-		{
-			CarryingHand->AttachObject(this, false);
-			AttachedHand = NULL;
 			if (!bHasIncremented)
 			{
 				Manager->GamestateIncrement();
 				bHasIncremented = true;
 			}
 		}
-		return true;
 	}
-	else
-	{
-		return false;
-	}
-
+	
+	return Super::SetCarried(bIsCarried, CarryingHand, bLeftHand);
 }

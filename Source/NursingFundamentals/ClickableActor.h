@@ -16,6 +16,9 @@ class NURSINGFUNDAMENTALS_API AClickableActor : public AGrabbableActor
 public:
 	AClickableActor();
 
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 		USkeletalMeshComponent* Mesh;
 
@@ -26,6 +29,7 @@ public:
 		UBoxComponent* BoxCollider;
 
 	bool SetCarried(bool bIsCarried, UGrabComponent* CarryingHand, bool bLeftHand) override;
+	void SetHighlighted(bool bHighlighted) override;
 
 protected:
 	bool bSwapped;

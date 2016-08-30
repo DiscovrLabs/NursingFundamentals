@@ -29,6 +29,9 @@ void AGrabbableActor::BeginPlay()
 	{
 		AudioComp->SetSound(GrabSound);
 	}
+
+	ActorMesh->CreateDynamicMaterialInstance(0);
+	ActorMesh->SetVectorParameterValueOnMaterials("Highlight", FVector::ZeroVector);
 	/*
 	TArray<AActor*> TempArray;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AScriptManager::StaticClass(), TempArray);
@@ -102,9 +105,23 @@ void AGrabbableActor::TellManager()
 	DetachFromHand();
 }
 
-void AGrabbableActor::SetHighlighted()
+void AGrabbableActor::SetHighlighted(bool bHighlighted)
 {
-	//ActorMesh->GetMaterial(0);
+	if (bCanCarry)
+	{
+		if (bHighlighted)
+		{
+			ActorMesh->SetVectorParameterValueOnMaterials("Highlight", FVector(1, 0.892, 0.12));
+		}
+		else
+		{
+			ActorMesh->SetVectorParameterValueOnMaterials("Highlight", FVector::ZeroVector);
+		}
+	}
+	else
+	{
+		ActorMesh->SetVectorParameterValueOnMaterials("Highlight", FVector::ZeroVector);
+	}
 }
 
 bool AGrabbableActor::GetCarried()
