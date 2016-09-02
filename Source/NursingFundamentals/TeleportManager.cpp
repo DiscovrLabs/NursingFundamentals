@@ -10,12 +10,12 @@
 ATeleportManager::ATeleportManager()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
-	TeleportLocations.Add(FVector(261.f, -91.f, 170.f));
-	TeleportLocations.Add(FVector(-5.5f, 449.f, 170.f));
-	TeleportLocations.Add(FVector(152.f, -248.f, 170.f));
-	TeleportLocations.Add(FVector(-156.f, 302.f, 170.f));
+	TeleportLocations.Add(FVector(-116.884834f, -112.644356f, 130.f));
+	TeleportLocations.Add(FVector(-317.102051f, -91.714333f, 130.f));
+	TeleportLocations.Add(FVector(-140.637268f, 152.554108f, 130.f));
+	TeleportLocations.Add(FVector(302.166992f, 152.554504f, 130.f));
 
 	bTutorial = false;
 }
@@ -24,13 +24,6 @@ ATeleportManager::ATeleportManager()
 void ATeleportManager::BeginPlay()
 {
 	Super::BeginPlay();
-}
-
-// Called every frame
-void ATeleportManager::Tick( float DeltaTime )
-{
-	Super::Tick( DeltaTime );
-
 }
 
 void ATeleportManager::SpawnTeleporters()
