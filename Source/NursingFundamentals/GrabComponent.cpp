@@ -38,7 +38,7 @@ void UGrabComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 
 void UGrabComponent::GrabItem()
 {
-	if (HoldTargets.Num() > 0)
+	if (HoldTargets.Num() > 0 && HighlightedItem)
 	{
 		HeldItem = HighlightedItem;
 		bHoldingItem = Cast<AGrabbableActor>(HeldItem)->SetCarried(true, this, bLeftHand);

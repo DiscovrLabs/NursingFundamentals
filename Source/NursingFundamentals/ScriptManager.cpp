@@ -37,14 +37,22 @@ void AScriptManager::GamestateIncrement()
 	{
 	case 0:
 		Cast<AGrabbableActor>(GrabbableActors[5])->SetCanCarry(true);
-	case 2:
+		UE_LOG(LogTemp, Warning, TEXT("Enabling Index %d, Object Name: %s"), 5, *GrabbableActors[5]->GetName());
+	case 3:
 		Cast<AGrabbableActor>(GrabbableActors[Gamestate])->SetCanCarry(true);
+		UE_LOG(LogTemp, Warning, TEXT("Enabling Index %d, Object Name: %s"), Gamestate, *GrabbableActors[Gamestate]->GetName());
 		break;
 	default:
 		if (Gamestate - 1 >= 0)
+		{
 			Cast<AGrabbableActor>(GrabbableActors[Gamestate - 1])->SetCanCarry(false);
-		if (Gamestate < GrabbableActors.Num()-1)
+			UE_LOG(LogTemp, Warning, TEXT("Disabling Index %d, Object Name: %s"), Gamestate - 1, *GrabbableActors[Gamestate - 1]->GetName());
+		}
+		if (Gamestate < GrabbableActors.Num() - 1)
+		{
 			Cast<AGrabbableActor>(GrabbableActors[Gamestate])->SetCanCarry(true);
+			UE_LOG(LogTemp, Warning, TEXT("Enabling Index %d, Object Name: %s"), Gamestate, *GrabbableActors[Gamestate]->GetName());
+		}
 		break;
 	}
 	Gamestate++;

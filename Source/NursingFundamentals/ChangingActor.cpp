@@ -24,6 +24,7 @@ bool AChangingActor::SetCarried(bool bIsCarried, UGrabComponent* CarryingHand, b
 		{
 			TellManager(true);
 			ActorMesh->SetStaticMesh(StartMesh);
+			AddVelocity(AvgDirection * AvgSpeed);
 		}
 	}
 
