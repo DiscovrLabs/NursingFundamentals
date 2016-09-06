@@ -18,6 +18,8 @@ bool AChangingActor::SetCarried(bool bIsCarried, UGrabComponent* CarryingHand, b
 		{
 			TellManager(false);
 			AudioComp->Play();
+			SetActorRelativeLocation(FVector::ZeroVector);
+			SetActorRelativeRotation(FQuat::Identity);
 			ActorMesh->SetStaticMesh(GrabbedMesh);
 		}
 		else

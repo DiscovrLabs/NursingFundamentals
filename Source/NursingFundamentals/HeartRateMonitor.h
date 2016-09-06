@@ -17,7 +17,16 @@ public:
 	AHeartRateMonitor();
 
 	bool SetCarried(bool bIsCarried, UGrabComponent* CarryingHand, bool bLeftHand) override;
-	
+	virtual void SetCanCarry(bool A) override;
+
 protected:
+	void EnableSoundLoop();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+		UAudioComponent* AudioLoop;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+		USoundBase* LoopSound;
+
 	bool bHasIncremented;
 };

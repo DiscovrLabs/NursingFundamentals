@@ -17,6 +17,7 @@ AGrabbableActor::AGrabbableActor()
 	AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
 	AudioComp->AttachTo(RootComponent);
 
+	AttachedHand = NULL;
 	bCanCarry = false;
 }
 
@@ -48,7 +49,7 @@ void AGrabbableActor::Tick( float DeltaTime )
 
 bool AGrabbableActor::SetCarried(bool bIsCarried, UGrabComponent* CarryingHand, bool bLeftHand)
 {
-	if (bCanCarry)
+	if (bCanCarry && AttachedHand == NULL)
 	{
 		if (bIsCarried)
 		{
@@ -132,4 +133,12 @@ bool AGrabbableActor::GetCarried()
 	}
 
 	return false;
+}
+
+void AGrabbableActor::TriggerHaptic()
+{
+	if (AttachedHand)
+	{
+		AttachedHand->TriggerHaptic();
+	}
 }

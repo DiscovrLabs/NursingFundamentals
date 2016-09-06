@@ -36,10 +36,11 @@ public:
 		void DetachFromHand();
 
 	int32 GetActorID();
-	void SetCanCarry(bool A);
+	virtual void SetCanCarry(bool A);
 	void SetManager(AScriptManager* NewManager);
 	virtual void SetHighlighted(bool bHighlighted);
 	bool GetCarried();
+	void TriggerHaptic();
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")

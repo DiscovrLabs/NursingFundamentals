@@ -5,6 +5,9 @@
 
 AHeartRateMonitor::AHeartRateMonitor()
 {
+	AudioLoop = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioLoop"));
+	AudioLoop->AttachTo(RootComponent);
+
 	bHasIncremented = false;
 }
 
@@ -23,4 +26,19 @@ bool AHeartRateMonitor::SetCarried(bool bIsCarried, UGrabComponent* CarryingHand
 	}
 	
 	return Super::SetCarried(bIsCarried, CarryingHand, bLeftHand);
+}
+
+void AHeartRateMonitor::SetCanCarry(bool A)
+{
+	Super::SetCanCarry(A);
+	EnableSoundLoop();
+}
+
+void AHeartRateMonitor::EnableSoundLoop()
+{
+	if (LoopSound)
+	{
+		AudioLoop->SetSound(LoopSound);
+		AudioLoop->Play();
+	}
 }

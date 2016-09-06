@@ -41,6 +41,7 @@ void AInteractionCollider::OnBeginOverlap(AActor* Actor, AActor * OtherActor)
 	{
 		if (TempActor->GetActorID() == ColliderID && TempActor->GetCarried())
 		{
+			TempActor->TriggerHaptic();
 			TempActor->TriggerInteraction();
 		}
 	}

@@ -45,7 +45,7 @@ void UGrabComponent::GrabItem()
 
 		if (bHoldingItem)
 		{
-			UGameplayStatics::GetPlayerController(GetWorld(), 0)->ClientPlayForceFeedback(HapticEffect, false, FName("Grab"));
+			TriggerHaptic();
 			Cast<AGrabbableActor>(HighlightedItem)->SetHighlighted(false);
 			HighlightedItem = NULL;
 		}
@@ -102,6 +102,11 @@ void UGrabComponent::AttachObject(AActor* Target, bool bConnect)
 			Target->DetachRootComponentFromParent();
 		}
 	}
+}
+
+void UGrabComponent::TriggerHaptic()
+{
+	UGameplayStatics::GetPlayerController(GetWorld(), 0)->ClientPlayForceFeedback(HapticEffect, false, FName("Grab"));
 }
 
 AActor* UGrabComponent::FindClosestToPalm()

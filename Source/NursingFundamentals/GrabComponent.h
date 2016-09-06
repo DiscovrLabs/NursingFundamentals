@@ -29,6 +29,7 @@ public:
 	void SetHolding(bool bHolding);
 	AActor* GetItem();
 	void AttachObject(AActor* Target, bool bConnect);
+	void TriggerHaptic();
 
 	bool bLeftHand;
 
