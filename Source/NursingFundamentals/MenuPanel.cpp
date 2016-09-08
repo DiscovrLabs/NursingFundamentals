@@ -53,6 +53,7 @@ void AMenuPanel::BeginPlay()
 		TempArray[i]->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale, NAME_None);
 		TempArray[i]->SetActorRotation(GetActorRotation());
 		TempArray[i]->AddActorLocalOffset(FVector(0.f, SecClickableContainersLocations[i].X, SecClickableContainersLocations[i].Y));
+		TempArray[i]->SetActorScale3D(TempArray[i]->GetActorScale3D() * 0.6f);
 		SecClickableContainers.Add(TempArray[i]);
 		SecClickableContainers[i]->LocalOffset = FVector(0.f, SecClickableContainersLocations[i].X, SecClickableContainersLocations[i].Y);
 		SecClickableContainers[i]->SetStartLocation(SecClickableContainers[i]->LocalOffset);

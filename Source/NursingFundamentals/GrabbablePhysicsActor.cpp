@@ -13,8 +13,17 @@ AGrabbablePhysicsActor::AGrabbablePhysicsActor()
 	//MovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComponent"));
 	//MovementComponent->SetUpdatedComponent(ActorMesh);
 
-	bFirstFrame = false;
+	bFirstFrame = bCalcPhysics = false;
+	ResetTimer = 0.0f;
+	KillZ = 10.0f;
 	PreviousPos = FVector::ZeroVector;
+}
+
+void AGrabbablePhysicsActor::BeginPlay()
+{
+	Super::BeginPlay();
+
+	SpawnPos = GetTransform();
 }
 
 void AGrabbablePhysicsActor::Tick(float DeltaSeconds)
@@ -43,9 +52,17 @@ void AGrabbablePhysicsActor::Tick(float DeltaSeconds)
 		PreviousPos = CurrentPos;
 	}
 
-	if (bResetPending)
+	if (!bCalcPhysics)
 	{
-		Destroy();
+		if (GetActorLocation().Z < KillZ)
+		{
+			ResetTimer += DeltaSeconds;
+			if (ResetTimer > 3.0f)
+			{
+				ResetTimer = 0.0f;
+				ResetActor();
+			}
+		}
 	}
 }
 
@@ -57,7 +74,7 @@ bool AGrabbablePhysicsActor::SetCarried(bool bIsCarried, UGrabComponent * Carryi
 		{
 			AudioComp->Play();
 			ActorMesh->SetSimulatePhysics(false);
-			AvgSpeed = 0.0f;
+			AvgSpeed = ResetTimer = 0.0f;
 			AvgDirection = FVector::ZeroVector;
 			PreviousPos = GetActorLocation();
 			bCalcPhysics = true;
@@ -89,7 +106,7 @@ bool AGrabbablePhysicsActor::SetCarried(bool bIsCarried, UGrabComponent * Carryi
 
 void AGrabbablePhysicsActor::ResetActor()
 {
-	bResetPending = true;
+	SetActorTransform(SpawnPos);
 }
 
 void AGrabbablePhysicsActor::AddVelocity(FVector Velocity)

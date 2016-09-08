@@ -17,6 +17,9 @@ public:
 	// Sets default values for this actor's properties
 	AGrabbablePhysicsActor();
 
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;
 
@@ -30,6 +33,10 @@ public:
 	UProjectileMovementComponent* MovementComponent;
 	*/
 protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawn")
+		float KillZ;
+	FTransform SpawnPos;
+	float ResetTimer;
 
 	FVector PreviousPos;
 	FVector AvgDirection;
@@ -37,5 +44,4 @@ protected:
 
 	bool bFirstFrame;
 	bool bCalcPhysics;
-	bool bResetPending;
 };
