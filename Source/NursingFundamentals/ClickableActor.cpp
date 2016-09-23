@@ -23,6 +23,8 @@ bool AClickableActor::SetCarried(bool bIsCarried, UGrabComponent* CarryingHand, 
 {
 	if (bIsCarried && !bSwapped)
 	{
+		SetHighlighted(false);
+		Mesh->OverrideMaterials.Empty();
 		Mesh->SetSkeletalMesh(NewMesh, false);
 		bSwapped = true;
 		Manager->GamestateIncrement();
@@ -44,7 +46,7 @@ void AClickableActor::SetHighlighted(bool bHighlighted)
 		{
 			//Mesh->SetVectorParameterValueOnMaterials("Highlight", FVector::ZeroVector);
 			UMaterialInstanceDynamic* temp = Cast<UMaterialInstanceDynamic>(Mesh->GetMaterial(2));
-			temp->SetVectorParameterValue("Highlight", FVector(1, 0.892, 0.12));
+			temp->SetVectorParameterValue("Highlight", FVector::ZeroVector);
 		}
 	}
 }

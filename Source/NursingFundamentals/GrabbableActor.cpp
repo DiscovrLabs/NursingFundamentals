@@ -49,7 +49,7 @@ void AGrabbableActor::Tick( float DeltaTime )
 
 bool AGrabbableActor::SetCarried(bool bIsCarried, UGrabComponent* CarryingHand, bool bLeftHand)
 {
-	if (bCanCarry && AttachedHand == NULL)
+	if (bCanCarry && (AttachedHand == NULL || CarryingHand == AttachedHand))
 	{
 		if (bIsCarried)
 		{
@@ -108,7 +108,7 @@ void AGrabbableActor::TellManager()
 
 void AGrabbableActor::SetHighlighted(bool bHighlighted)
 {
-	if (bCanCarry)
+	if (bCanCarry && AttachedHand == NULL)
 	{
 		if (bHighlighted)
 		{

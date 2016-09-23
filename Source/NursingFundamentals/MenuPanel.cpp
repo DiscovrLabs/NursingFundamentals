@@ -18,10 +18,10 @@ AMenuPanel::AMenuPanel()
 	MainContainerMode = -1;
 	HierarchyLevel = -1;
 
-	SecClickableContainersLocations.Add(FVector2D(-4.0, 4.0));
-	SecClickableContainersLocations.Add(FVector2D(4.0, 4.0));
-	SecClickableContainersLocations.Add(FVector2D(-4.0, -4.0));
-	SecClickableContainersLocations.Add(FVector2D(4.0, -4.0));
+	SecClickableContainersLocations.Add(FVector2D(-8.0, 8.0));
+	SecClickableContainersLocations.Add(FVector2D(8.0, 8.0));
+	SecClickableContainersLocations.Add(FVector2D(-8.0, -8.0));
+	SecClickableContainersLocations.Add(FVector2D(8.0, -8.0));
 	SecContainerMode = 0;
 
 	bTutorial = false;
@@ -53,7 +53,6 @@ void AMenuPanel::BeginPlay()
 		TempArray[i]->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale, NAME_None);
 		TempArray[i]->SetActorRotation(GetActorRotation());
 		TempArray[i]->AddActorLocalOffset(FVector(0.f, SecClickableContainersLocations[i].X, SecClickableContainersLocations[i].Y));
-		TempArray[i]->SetActorScale3D(TempArray[i]->GetActorScale3D() * 0.6f);
 		SecClickableContainers.Add(TempArray[i]);
 		SecClickableContainers[i]->LocalOffset = FVector(0.f, SecClickableContainersLocations[i].X, SecClickableContainersLocations[i].Y);
 		SecClickableContainers[i]->SetStartLocation(SecClickableContainers[i]->LocalOffset);
@@ -83,20 +82,18 @@ bool AMenuPanel::ClickMenuButton()
 		if (bTutorial)
 		{
 			Cast<ATutorialManager>(TutorialManager)->ButtonClicked(0);
-			//UE_LOG(LogTemp, Warning, TEXT("Charmander"));
+			UE_LOG(LogTemp, Warning, TEXT("Charmander"));
 		}
-		UE_LOG(LogTemp, Warning, TEXT("Charmander"));
 		return false;
 	}
 	// if menu is off or player is in the 2nd level of the menu, turn on the main level of the menu. else if player is in the 3rd level of the menu send them back to the 2nd
 	if (HierarchyLevel == -1 || HierarchyLevel == 1)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Squirtle"));
 		EnableMode(0);
 		if (bTutorial)
 		{
 			Cast<ATutorialManager>(TutorialManager)->ButtonClicked(0);
-			//UE_LOG(LogTemp, Warning, TEXT("Charmander"));
+			UE_LOG(LogTemp, Warning, TEXT("Squirtle"));
 		}
 	}
 	else if (HierarchyLevel == 2)
@@ -234,7 +231,8 @@ void AMenuPanel::EnableMode(int32 Mode)
 
 void AMenuPanel::ShowHealthRecord()
 {
-	Cast<ATutorialManager>(TutorialManager)->ButtonClicked(99);
+	if(bTutorial)
+		Cast<ATutorialManager>(TutorialManager)->ButtonClicked(99);
 }
 
 void AMenuPanel::TurnRolodex(bool bRotateDown)

@@ -11,7 +11,6 @@ ATeleportManager::ATeleportManager()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-
 	TeleportLocations.Add(FVector(-116.884834f, -112.644356f, 130.f));
 	TeleportLocations.Add(FVector(-317.102051f, -91.714333f, 130.f));
 	TeleportLocations.Add(FVector(-140.637268f, 152.554108f, 130.f));

@@ -68,7 +68,7 @@ void AGrabbablePhysicsActor::Tick(float DeltaSeconds)
 
 bool AGrabbablePhysicsActor::SetCarried(bool bIsCarried, UGrabComponent * CarryingHand, bool bLeftHand)
 {
-	if (bCanCarry)
+	if (bCanCarry && (AttachedHand == NULL || CarryingHand == AttachedHand))
 	{
 		if (bIsCarried)
 		{
